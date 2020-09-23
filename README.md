@@ -11,7 +11,7 @@ A project on the speed up of one-shot adversarially trained human pose to image 
 * Apex (is required only for training, needs to be built from https://github.com/NVIDIA/apex)
 * Face-alignment (https://github.com/1adrianb/face-alignment)
 * Other packages are in requirements.txt
-* Download pre-trained weights from https://drive.google.com/drive/folders/11SwIYnk3KY61d8qa17Nlb0BN9j57B3L6
+* Download pretrained_weights and runs from https://drive.google.com/drive/folders/11SwIYnk3KY61d8qa17Nlb0BN9j57B3L6
 
 ## Inference API usage
 
