@@ -2,7 +2,7 @@
 
 A project on the speed up of one-shot adversarially trained human pose to image translation models for mobile devices.
 
-<img src="https://saic-violet.github.io/bilayer-model/assets/visuals_self.gif" width="640"/>
+![alt text](https://saic-violet.github.io/bilayer-model/assets/visuals_self.gif)
 
 ## Installation
 
