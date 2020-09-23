@@ -57,7 +57,9 @@ The example training scripts are in the scripts folder. The base model is traine
 ## Datasets
 
 Supported datasets should have the same structure as VoxCeleb2 (http://www.robots.ox.ac.uk/~vgg/data/voxceleb/vox2.html) dataset:
+
 ```DATA_ROOT/[imgs, keypoints, segs]/[train, test]/PERSON_ID/VIDEO_ID/SEQUENCE_ID/FRAME_NUM[.jpg, .npy, .png]```
+
 Please refer to the link above for more details.
 
 Additionally, all training data must be annotated with keypoints obtained using face-alignment (or any other keypoints detection) library before training. Annotation with segmentation masks is optional, yet it significantly improves the performance of the method.
