@@ -2,12 +2,14 @@
 
 A project on the speed up of one-shot adversarially trained human pose to image translation models for mobile devices.
 
+<img src="https://saic-violet.github.io/bilayer-model/assets/visuals_self.gif" width="640"/>
+
 ## Installation
 
-* Git LFS
 * Python 3.7
 * Pytorch 1.0.1 or higher
 * Apex (is required only for training, needs to be built from https://github.com/NVIDIA/apex)
+* Face-alignment (https://github.com/1adrianb/face-alignment)
 * Other packages are in requirements.txt
 * Download pre-trained weights from https://drive.google.com/drive/folders/11SwIYnk3KY61d8qa17Nlb0BN9j57B3L6
 
@@ -51,3 +53,27 @@ For a concrete inference example, please refer to examples/inference.ipynb.
 ## Training
 
 The example training scripts are in the scripts folder. The base model is trained first, the texture enhancer is trained afterwards. In order to reproduce the results from the paper, 8 GPUs with at least 24 GBs of memory are required, since batch normalization layers may be sensitive to the batch size.
+
+## Datasets
+
+Supported datasets should have the same structure as VoxCeleb2 (http://www.robots.ox.ac.uk/~vgg/data/voxceleb/vox2.html) dataset:
+```DATA_ROOT/[imgs, keypoints, segs]/[train, test]/PERSON_ID/VIDEO_ID/SEQUENCE_ID/FRAME_NUM[.jpg, .npy, .png]```
+Please refer to the link above for more details.
+
+Additionally, all training data must be annotated with keypoints obtained using face-alignment (or any other keypoints detection) library before training. Annotation with segmentation masks is optional, yet it significantly improves the performance of the method.
+
+## Links
+
+- Project page: https://saic-violet.github.io/bilayer-model
+- ArXiv: https://arxiv.org/abs/2008.10174
+- YouTube: https://youtu.be/54tji11VhOI
+
+## Citation
+```
+@InProceedings{Zakharov20,
+  author={Zakharov, Egor and Ivakhnenko, Aleksei and Shysheya, Aliaksandra and Lempitsky, Victor},
+  title={Fast Bi-layer Neural Synthesis of One-Shot Realistic Head Avatars},
+  booktitle = {European Conference of Computer vision (ECCV)},
+  month = {August},
+  year = {2020}}
+```
