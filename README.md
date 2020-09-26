@@ -7,7 +7,7 @@ A project on the speed up of one-shot adversarially trained human pose to image 
 ## Installation
 
 * Python 3.7
-* Pytorch 1.0.1 or higher
+* Pytorch 1.3 or higher
 * Apex (is required only for training, needs to be built from https://github.com/NVIDIA/apex)
 * Face-alignment (https://github.com/1adrianb/face-alignment)
 * Other packages are in requirements.txt
