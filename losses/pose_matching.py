@@ -8,7 +8,6 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 import sys
-sys.path.append('/group-volume/orc_srr/violet/e.zakharov/projects/face-alignment')
 import face_alignment
 
 # This project
