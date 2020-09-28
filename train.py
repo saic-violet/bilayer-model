@@ -36,7 +36,7 @@ class TrainingWrapper(object):
         parser.add('--dataset_name',             default='voxceleb2_512px', type=str,
                                                  help='name of the dataset in the data root folder')
 
-        parser.add('--data_root',                default="/group-volume/orc_srr/violet/datasets/voxceleb2_512px", type=str,
+        parser.add('--data_root',                default=".", type=str,
                                                  help='root directory of the data')
 
         parser.add('--debug',                    action='store_true',
