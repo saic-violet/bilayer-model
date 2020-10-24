@@ -144,7 +144,7 @@ class NetworkWrapper(nn.Module):
                 pred_source_imgs = pred_source_imgs * pred_source_segs + (-1) * (1 - pred_source_segs)
 
             # Calculate the gradients with respect to the enhancer losses
-            loss_enh = self.rgb_loss(pred_source_imgs, source_imgs)
+            loss_enh = self.rgb_loss(pred_source_imgs, source_imgs.detach())
 
             loss_enh.backward()
 
