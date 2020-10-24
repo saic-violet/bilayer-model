@@ -74,6 +74,9 @@ class InferenceWrapper(nn.Module):
                     checkpoints_dir 
                         / f'{self.args.which_epoch}_{net_name}.pth', 
                     map_location='cpu'))
+        
+        # Remove spectral norm to improve the performance
+        self.runner.apply(rn_utils.remove_spectral_norm)
 
         # Stickman/facemasks drawer
         self.fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=True)
