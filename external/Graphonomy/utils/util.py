@@ -18,6 +18,11 @@ def recursive_glob(rootdir='.', suffix=''):
         for filename in filenames if filename.endswith(suffix)]
 
 def get_cityscapes_labels():
+    """
+    Get labels for the labels.
+
+    Args:
+    """
     return np.array([
         # [  0,   0,   0],
         [128, 64, 128],
@@ -96,6 +101,13 @@ def encode_segmap(mask):
 
 
 def decode_seg_map_sequence(label_masks, dataset='pascal'):
+    """
+    Decode a segmap.
+
+    Args:
+        label_masks: (str): write your description
+        dataset: (todo): write your description
+    """
     rgb_masks = []
     for label_mask in label_masks:
         rgb_mask = decode_segmap(label_mask, dataset)
@@ -143,12 +155,30 @@ def decode_segmap(label_mask, dataset, plot=False):
         return rgb
 
 def generate_param_report(logfile, param):
+    """
+    Generate a report of logfile.
+
+    Args:
+        logfile: (str): write your description
+        param: (dict): write your description
+    """
     log_file = open(logfile, 'w')
     for key, val in param.items():
         log_file.write(key + ':' + str(val) + '\n')
     log_file.close()
 
 def cross_entropy2d(logit, target, ignore_index=255, weight=None, size_average=True, batch_average=True):
+    """
+    Calculate the entropy.
+
+    Args:
+        logit: (todo): write your description
+        target: (todo): write your description
+        ignore_index: (bool): write your description
+        weight: (str): write your description
+        size_average: (int): write your description
+        batch_average: (todo): write your description
+    """
     n, c, h, w = logit.size()
     # logit = logit.permute(0, 2, 3, 1)
     target = target.squeeze(1)
@@ -161,6 +191,17 @@ def cross_entropy2d(logit, target, ignore_index=255, weight=None, size_average=T
     return loss
 
 def cross_entropy2d_dataparallel(logit, target, ignore_index=255, weight=None, size_average=True, batch_average=True):
+    """
+    Calculate the cross entropy.
+
+    Args:
+        logit: (todo): write your description
+        target: (todo): write your description
+        ignore_index: (bool): write your description
+        weight: (str): write your description
+        size_average: (int): write your description
+        batch_average: (todo): write your description
+    """
     n, c, h, w = logit.size()
     # logit = logit.permute(0, 2, 3, 1)
     target = target.squeeze(1)
@@ -173,10 +214,27 @@ def cross_entropy2d_dataparallel(logit, target, ignore_index=255, weight=None, s
     return loss.sum()
 
 def lr_poly(base_lr, iter_, max_iter=100, power=0.9):
+    """
+    R calculate the sum of a degree.
+
+    Args:
+        base_lr: (str): write your description
+        iter_: (int): write your description
+        max_iter: (int): write your description
+        power: (float): write your description
+    """
     return base_lr * ((1 - float(iter_) / max_iter) ** power)
 
 
 def get_iou(pred, gt, n_classes=21):
+    """
+    Calculate the ioum objective function ) of pred pred.
+
+    Args:
+        pred: (str): write your description
+        gt: (todo): write your description
+        n_classes: (int): write your description
+    """
     total_iou = 0.0
     for i in range(len(pred)):
         pred_tmp = pred[i]
@@ -205,6 +263,14 @@ def get_iou(pred, gt, n_classes=21):
     return total_iou
 
 def scale_tensor(input,size=512,mode='bilinear'):
+    """
+    Scale a tensor.
+
+    Args:
+        input: (todo): write your description
+        size: (int): write your description
+        mode: (str): write your description
+    """
     print(input.size())
     # b,h,w = input.size()
     _, _, h, w = input.size()
@@ -217,6 +283,12 @@ def scale_tensor(input,size=512,mode='bilinear'):
     return F.upsample(input, size=(size,size), mode=mode, align_corners=True)
 
 def scale_tensor_list(input,):
+    """
+    Scale a list of tensor
+
+    Args:
+        input: (todo): write your description
+    """
 
     output = []
     for i in range(len(input)-1):
@@ -229,6 +301,13 @@ def scale_tensor_list(input,):
     return output
 
 def scale_tensor_list_0(input,base_input):
+    """
+    Scale a list of tensors to a list.
+
+    Args:
+        input: (todo): write your description
+        base_input: (todo): write your description
+    """
 
     output = []
     assert  len(input) == len(base_input)

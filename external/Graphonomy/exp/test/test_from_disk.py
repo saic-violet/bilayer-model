@@ -30,6 +30,15 @@ def get_parser():
     return opts
 
 def eval_(pred_path, gt_path, classes, txt_file):
+    """
+    Evaluate the model on the predictions.
+
+    Args:
+        pred_path: (str): write your description
+        gt_path: (str): write your description
+        classes: (list): write your description
+        txt_file: (str): write your description
+    """
     pred_path = pred_path
     gt_path = gt_path
 

@@ -19,17 +19,36 @@ class FutureResult(object):
     """A thread-safe future implementation. Used only as one-to-one pipe."""
 
     def __init__(self):
+        """
+        Initialize the thread.
+
+        Args:
+            self: (todo): write your description
+        """
         self._result = None
         self._lock = threading.Lock()
         self._cond = threading.Condition(self._lock)
 
     def put(self, result):
+        """
+        Put the result to the queue.
+
+        Args:
+            self: (todo): write your description
+            result: (todo): write your description
+        """
         with self._lock:
             assert self._result is None, 'Previous result has\'t been fetched.'
             self._result = result
             self._cond.notify()
 
     def get(self):
+        """
+        Get the result of the job.
+
+        Args:
+            self: (todo): write your description
+        """
         with self._lock:
             if self._result is None:
                 self._cond.wait()
@@ -47,6 +66,13 @@ class SlavePipe(_SlavePipeBase):
     """Pipe for master-slave communication."""
 
     def run_slave(self, msg):
+        """
+        Runs a query.
+
+        Args:
+            self: (todo): write your description
+            msg: (str): write your description
+        """
         self.queue.put((self.identifier, msg))
         ret = self.result.get()
         self.queue.put(True)
@@ -76,9 +102,22 @@ class SyncMaster(object):
         self._activated = False
 
     def __getstate__(self):
+        """
+        Get the state of the master.
+
+        Args:
+            self: (todo): write your description
+        """
         return {'master_callback': self._master_callback}
 
     def __setstate__(self, state):
+        """
+        Sets the state is_state.
+
+        Args:
+            self: (todo): write your description
+            state: (dict): write your description
+        """
         self.__init__(state['master_callback'])
 
     def register_slave(self, identifier):
@@ -134,4 +173,10 @@ class SyncMaster(object):
 
     @property
     def nr_slaves(self):
+        """
+        : return : number of slaves.
+
+        Args:
+            self: (todo): write your description
+        """
         return len(self._registry)

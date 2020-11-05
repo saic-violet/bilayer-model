@@ -13,6 +13,12 @@ from networks import utils as nt_utils
 class NetworkWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--tex_num_channels',         default=64, type=int, 
                                                  help='minimum number of channels')
 
@@ -38,6 +44,12 @@ class NetworkWrapper(nn.Module):
                                                  help='skip connection layer type')
 
     def __init__(self, args):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+        """
         super(NetworkWrapper, self).__init__()
         # Initialize options
         self.args = args
@@ -55,6 +67,15 @@ class NetworkWrapper(nn.Module):
             networks_to_train: list,
             all_networks: dict, # dict of all networks in the model
         ) -> dict:
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            networks_to_train: (todo): write your description
+            all_networks: (todo): write your description
+        """
 
         # Do not store activations if this network is not being trained
         if 'texture_generator' not in networks_to_train:
@@ -87,6 +108,13 @@ class NetworkWrapper(nn.Module):
 
     @torch.no_grad()
     def visualize_outputs(self, data_dict):
+        """
+        Visualizes a dictionary
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+        """
         # All visualization is done in the inference generator
         visuals = []
 
@@ -94,6 +122,14 @@ class NetworkWrapper(nn.Module):
 
     @staticmethod
     def assign_adaptive_params(net, weights, biases):
+        """
+        Assign weights to weights.
+
+        Args:
+            net: (todo): write your description
+            weights: (array): write your description
+            biases: (todo): write your description
+        """
         i = 0
         for m in net.modules():
             if m.__class__.__name__ == "AdaptiveNorm2d" and 'spade' not in m.norm_layer_type:
@@ -108,6 +144,13 @@ class NetworkWrapper(nn.Module):
 
     @staticmethod
     def adaptive_params_mixing(net, indices):
+        """
+        Adapted from the weights.
+
+        Args:
+            net: (todo): write your description
+            indices: (array): write your description
+        """
         for m in net.modules():
             if m.__class__.__name__ == "AdaptiveNorm2d" and 'spade' not in m.norm_layer_type:
                 m.weight = m.weight[indices]
@@ -118,6 +161,12 @@ class NetworkWrapper(nn.Module):
                 m.bias = m.bias[indices]
 
     def __repr__(self):
+        """
+        Return a representation of this parameter.
+
+        Args:
+            self: (todo): write your description
+        """
         output = ''
 
         num_params = 0
@@ -140,6 +189,12 @@ class NetworkWrapper(nn.Module):
 
 class Generator(nn.Module):
     def __init__(self, args):
+        """
+        Initialize layer layers.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Generator, self).__init__()
         # Set options for the blocks
         num_blocks = int(math.log(args.image_size // args.tex_input_tensor_size, 2))
@@ -202,6 +257,13 @@ class Generator(nn.Module):
             self.heads += [nn.Sequential(*layers)]
 
     def forward(self, inputs):
+        """
+        Forward computation
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+        """
         outputs = self.blocks(inputs).contiguous()
 
         results = []
@@ -214,6 +276,13 @@ class Generator(nn.Module):
 
 class Projector(nn.Module):
     def __init__(self, args, bottleneck_size=1024):
+        """
+        Initialize the bottleneck.
+
+        Args:
+            self: (todo): write your description
+            bottleneck_size: (int): write your description
+        """
         super(Projector, self).__init__()
         # Calculate parameters of the blocks
         num_blocks = int(math.log(args.image_size // args.tex_input_tensor_size, 2))
@@ -301,6 +370,13 @@ class Projector(nn.Module):
                     nn.Linear(in_channels, 2))]
 
     def forward(self, embeds):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            embeds: (todo): write your description
+        """
         weights = []
         biases = []
 

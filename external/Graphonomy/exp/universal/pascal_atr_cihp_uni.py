@@ -42,6 +42,13 @@ gpu_id = 1
 resume_epoch = 0   # Default is 0, change if want to resume
 
 def flip(x, dim):
+    """
+    Flip a tensor to [ 0 1 ].
+
+    Args:
+        x: (array): write your description
+        dim: (int): write your description
+    """
     indices = [slice(None)] * x.dim()
     indices[dim] = torch.arange(x.size(dim) - 1, -1, -1,
                                 dtype=torch.long, device=x.device)
@@ -121,6 +128,12 @@ def get_graphs(opts):
 
 
 def main(opts):
+    """
+    Main function.
+
+    Args:
+        opts: (todo): write your description
+    """
     # Set parameters
     p = OrderedDict()  # Parameters to include in report
     p['trainBatch'] = opts.batch  # Training batch size
@@ -434,6 +447,19 @@ def main(opts):
 
 
 def val_pascal(net_, testloader, testloader_flip, test_graph, criterion, epoch, writer, classes=7):
+    """
+    Evaluate network
+
+    Args:
+        net_: (todo): write your description
+        testloader: (todo): write your description
+        testloader_flip: (bool): write your description
+        test_graph: (todo): write your description
+        criterion: (int): write your description
+        epoch: (int): write your description
+        writer: (todo): write your description
+        classes: (list): write your description
+    """
     running_loss_ts = 0.0
     miou = 0
     adj1_test, adj2_test, adj3_test, adj4_test, adj5_test, adj6_test = test_graph

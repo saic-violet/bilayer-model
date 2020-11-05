@@ -9,6 +9,15 @@ from . import graph
 class GraphConvolution(nn.Module):
 
     def __init__(self,in_features,out_features,bias=False):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            in_features: (int): write your description
+            out_features: (int): write your description
+            bias: (float): write your description
+        """
         super(GraphConvolution, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -20,6 +29,12 @@ class GraphConvolution(nn.Module):
         self.reset_parameters()
 
     def reset_parameters(self):
+        """
+        Reset the parameters.
+
+        Args:
+            self: (todo): write your description
+        """
         # stdv = 1./math.sqrt(self.weight(1))
         # self.weight.data.uniform_(-stdv,stdv)
         torch.nn.init.xavier_uniform_(self.weight)
@@ -27,6 +42,15 @@ class GraphConvolution(nn.Module):
         #     self.bias.data.uniform_(-stdv,stdv)
 
     def forward(self, input,adj=None,relu=False):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj: (todo): write your description
+            relu: (todo): write your description
+        """
         support = torch.matmul(input, self.weight)
         # print(support.size(),adj.size())
         if adj is not None:
@@ -43,6 +67,12 @@ class GraphConvolution(nn.Module):
                 return output
 
     def __repr__(self):
+        """
+        Return a repr representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.__class__.__name__ + ' (' \
                + str(self.in_features) + ' -> ' \
                + str(self.out_features) + ')'
@@ -50,12 +80,28 @@ class GraphConvolution(nn.Module):
 class Featuremaps_to_Graph(nn.Module):
 
     def __init__(self,input_channels,hidden_layers,nodes=7):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            input_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            nodes: (list): write your description
+        """
         super(Featuremaps_to_Graph, self).__init__()
         self.pre_fea = Parameter(torch.FloatTensor(input_channels,nodes))
         self.weight = Parameter(torch.FloatTensor(input_channels,hidden_layers))
         self.reset_parameters()
 
     def forward(self, input):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+        """
         n,c,h,w = input.size()
         # print('fea input',input.size())
         input1 = input.view(n,c,h*w)
@@ -71,6 +117,12 @@ class Featuremaps_to_Graph(nn.Module):
         return graph_node # n x n_class x hidden_layer
 
     def reset_parameters(self):
+        """
+        Reset all parameters.
+
+        Args:
+            self: (todo): write your description
+        """
         for ww in self.parameters():
             torch.nn.init.xavier_uniform_(ww)
         # if self.bias is not None:
@@ -79,6 +131,16 @@ class Featuremaps_to_Graph(nn.Module):
 class Featuremaps_to_Graph_transfer(nn.Module):
 
     def __init__(self,input_channels,hidden_layers,nodes=7, source_nodes=20):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            input_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            nodes: (list): write your description
+            source_nodes: (str): write your description
+        """
         super(Featuremaps_to_Graph_transfer, self).__init__()
         self.pre_fea = Parameter(torch.FloatTensor(input_channels,nodes))
         self.weight = Parameter(torch.FloatTensor(input_channels,hidden_layers))
@@ -87,6 +149,14 @@ class Featuremaps_to_Graph_transfer(nn.Module):
         self.reset_parameters()
 
     def forward(self, input, source_pre_fea):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            source_pre_fea: (str): write your description
+        """
         self.pre_fea.data = self.pre_fea_learn(source_pre_fea)
         n,c,h,w = input.size()
         # print('fea input',input.size())
@@ -103,18 +173,41 @@ class Featuremaps_to_Graph_transfer(nn.Module):
         return graph_node # n x n_class x hidden_layer
 
     def pre_fea_learn(self, input):
+        """
+        Pre_fea_transfer ).
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+        """
         pre_fea = self.pre_fea_transfer.forward(input.unsqueeze(0)).squeeze(0)
         return self.pre_fea.data + pre_fea
 
 class Graph_to_Featuremaps(nn.Module):
     # this is a special version
     def __init__(self,input_channels,output_channels,hidden_layers,nodes=7):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            input_channels: (todo): write your description
+            output_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            nodes: (list): write your description
+        """
         super(Graph_to_Featuremaps, self).__init__()
         self.node_fea = Parameter(torch.FloatTensor(input_channels+hidden_layers,1))
         self.weight = Parameter(torch.FloatTensor(hidden_layers,output_channels))
         self.reset_parameters()
 
     def reset_parameters(self):
+        """
+        Reset all parameters.
+
+        Args:
+            self: (todo): write your description
+        """
         for ww in self.parameters():
             torch.nn.init.xavier_uniform_(ww)
 
@@ -156,6 +249,16 @@ class Graph_to_Featuremaps(nn.Module):
 class Graph_to_Featuremaps_savemem(nn.Module):
     # this is a special version for saving gpu memory. The process is same as Graph_to_Featuremaps.
     def __init__(self, input_channels, output_channels, hidden_layers, nodes=7):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            input_channels: (todo): write your description
+            output_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            nodes: (list): write your description
+        """
         super(Graph_to_Featuremaps_savemem, self).__init__()
         self.node_fea_for_res = Parameter(torch.FloatTensor(input_channels, 1))
         self.node_fea_for_hidden = Parameter(torch.FloatTensor(hidden_layers, 1))
@@ -163,6 +266,12 @@ class Graph_to_Featuremaps_savemem(nn.Module):
         self.reset_parameters()
 
     def reset_parameters(self):
+        """
+        Reset all parameters.
+
+        Args:
+            self: (todo): write your description
+        """
         for ww in self.parameters():
             torch.nn.init.xavier_uniform_(ww)
 
@@ -209,6 +318,18 @@ class Graph_to_Featuremaps_savemem(nn.Module):
 class Graph_trans(nn.Module):
 
     def __init__(self,in_features,out_features,begin_nodes=7,end_nodes=2,bias=False,adj=None):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            in_features: (int): write your description
+            out_features: (int): write your description
+            begin_nodes: (str): write your description
+            end_nodes: (list): write your description
+            bias: (float): write your description
+            adj: (todo): write your description
+        """
         super(Graph_trans, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -226,6 +347,12 @@ class Graph_trans(nn.Module):
         # self.reset_parameters()
 
     def reset_parameters(self):
+        """
+        Reset the parameters.
+
+        Args:
+            self: (todo): write your description
+        """
         # stdv = 1./math.sqrt(self.weight(1))
         # self.weight.data.uniform_(-stdv,stdv)
         torch.nn.init.xavier_uniform_(self.weight)
@@ -233,6 +360,16 @@ class Graph_trans(nn.Module):
         #     self.bias.data.uniform_(-stdv,stdv)
 
     def forward(self, input, relu=False, adj_return=False, adj=None):
+        """
+        R forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            relu: (todo): write your description
+            adj_return: (bool): write your description
+            adj: (todo): write your description
+        """
         support = torch.matmul(input,self.weight)
         # print(support.size(),self.adj.size())
         if adj is None:
@@ -251,13 +388,32 @@ class Graph_trans(nn.Module):
                 return output
 
     def get_adj_mat(self):
+        """
+        Return the adjacency matrix.
+
+        Args:
+            self: (todo): write your description
+        """
         adj = graph.normalize_adj_torch(F.relu(self.adj_mat))
         return adj
 
     def get_encode_adj(self):
+        """
+        Returns the adjacency encoding.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.adj
 
     def norm_trans_adj(self,adj):  # maybe can use softmax
+        """
+        Return the adjac_trans_adj.
+
+        Args:
+            self: (todo): write your description
+            adj: (todo): write your description
+        """
         adj = F.relu(adj)
         r = F.softmax(adj,dim=-1)
         # print(adj.size())

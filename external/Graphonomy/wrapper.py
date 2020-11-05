@@ -13,6 +13,12 @@ from .networks import deeplab_xception_transfer, graph
 
 class SegmentationWrapper(nn.Module):
     def __init__(self, args):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+        """
         super(SegmentationWrapper, self).__init__()
         self.use_gpus = args.num_gpus > 0
 
@@ -48,6 +54,13 @@ class SegmentationWrapper(nn.Module):
         self.kernel = (grid[0]**2 + grid[1]**2 < (SIZE / 2.)**2).astype('uint8')
 
     def forward(self, imgs):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            imgs: (todo): write your description
+        """
         b, t = imgs.shape[:2]
         imgs = imgs.view(b*t, *imgs.shape[2:])
 

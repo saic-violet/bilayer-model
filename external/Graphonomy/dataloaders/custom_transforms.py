@@ -9,6 +9,14 @@ from torchvision import transforms
 
 class RandomCrop(object):
     def __init__(self, size, padding=0):
+        """
+        Initialize the size.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+            padding: (str): write your description
+        """
         if isinstance(size, numbers.Number):
             self.size = (int(size), int(size))
         else:
@@ -16,6 +24,13 @@ class RandomCrop(object):
         self.padding = padding
 
     def __call__(self, sample):
+        """
+        Call the image.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img, mask = sample['image'], sample['label']
 
         if self.padding > 0:
@@ -44,6 +59,14 @@ class RandomCrop(object):
 
 class RandomCrop_new(object):
     def __init__(self, size, padding=0):
+        """
+        Initialize the size.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+            padding: (str): write your description
+        """
         if isinstance(size, numbers.Number):
             self.size = (int(size), int(size))
         else:
@@ -51,6 +74,13 @@ class RandomCrop_new(object):
         self.padding = padding
 
     def __call__(self, sample):
+        """
+        Call this image.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img, mask = sample['image'], sample['label']
 
         if self.padding > 0:
@@ -89,12 +119,26 @@ class RandomCrop_new(object):
 
 class Paste(object):
     def __init__(self, size,):
+        """
+        Initialize a number of bytes.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+        """
         if isinstance(size, numbers.Number):
             self.size = (int(size), int(size))
         else:
             self.size = size # h, w
 
     def __call__(self, sample):
+        """
+        Call the function to the image.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img, mask = sample['image'], sample['label']
 
         assert img.size == mask.size
@@ -116,12 +160,26 @@ class Paste(object):
 
 class CenterCrop(object):
     def __init__(self, size):
+        """
+        Initialize a number of bytes.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+        """
         if isinstance(size, numbers.Number):
             self.size = (int(size), int(size))
         else:
             self.size = size
 
     def __call__(self, sample):
+        """
+        Call the image as a sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         assert img.size == mask.size
@@ -137,6 +195,13 @@ class CenterCrop(object):
 
 class RandomHorizontalFlip(object):
     def __call__(self, sample):
+        """
+        Call the image
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         if random.random() < 0.5:
@@ -148,6 +213,13 @@ class RandomHorizontalFlip(object):
 
 class HorizontalFlip(object):
     def __call__(self, sample):
+        """
+        Transpose the sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -158,6 +230,13 @@ class HorizontalFlip(object):
 
 class HorizontalFlip_only_img(object):
     def __call__(self, sample):
+        """
+        Call the image
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -168,6 +247,13 @@ class HorizontalFlip_only_img(object):
 
 class RandomHorizontalFlip_cihp(object):
     def __call__(self, sample):
+        """
+        Generate random sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         if random.random() < 0.5:
@@ -184,10 +270,25 @@ class Normalize(object):
         std (tuple): standard deviations for each channel.
     """
     def __init__(self, mean=(0., 0., 0.), std=(1., 1., 1.)):
+        """
+        Initialize the next instance.
+
+        Args:
+            self: (todo): write your description
+            mean: (float): write your description
+            std: (array): write your description
+        """
         self.mean = mean
         self.std = std
 
     def __call__(self, sample):
+        """
+        Calculate function.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = np.array(sample['image']).astype(np.float32)
         mask = np.array(sample['label']).astype(np.float32)
         img /= 255.0
@@ -204,10 +305,25 @@ class Normalize_255(object):
         std (tuple): standard deviations for each channel.
     """
     def __init__(self, mean=(123.15, 115.90, 103.06), std=(1., 1., 1.)):
+        """
+        Initialize a new population.
+
+        Args:
+            self: (todo): write your description
+            mean: (float): write your description
+            std: (array): write your description
+        """
         self.mean = mean
         self.std = std
 
     def __call__(self, sample):
+        """
+        Call the call
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = np.array(sample['image']).astype(np.float32)
         mask = np.array(sample['label']).astype(np.float32)
         # img = 255.0
@@ -223,6 +339,13 @@ class Normalize_xception_tf(object):
     #     self.rgb2bgr =
 
     def __call__(self, sample):
+        """
+        Call the call
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = np.array(sample['image']).astype(np.float32)
         mask = np.array(sample['label']).astype(np.float32)
         img = (img*2.0)/255.0 - 1
@@ -236,6 +359,13 @@ class Normalize_xception_tf_only_img(object):
     #     self.rgb2bgr =
 
     def __call__(self, sample):
+        """
+        Call the call of the sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = np.array(sample['image']).astype(np.float32)
         # mask = np.array(sample['label']).astype(np.float32)
         img = (img*2.0)/255.0 - 1
@@ -251,9 +381,23 @@ class Normalize_cityscapes(object):
         std (tuple): standard deviations for each channel.
     """
     def __init__(self, mean=(0., 0., 0.)):
+        """
+        Initialize the internal state.
+
+        Args:
+            self: (todo): write your description
+            mean: (float): write your description
+        """
         self.mean = mean
 
     def __call__(self, sample):
+        """
+        Call the call
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = np.array(sample['image']).astype(np.float32)
         mask = np.array(sample['label']).astype(np.float32)
         img -= self.mean
@@ -265,9 +409,22 @@ class Normalize_cityscapes(object):
 class ToTensor_(object):
     """Convert ndarrays in sample to Tensors."""
     def __init__(self):
+        """
+        Initialize the rgb rgb.
+
+        Args:
+            self: (todo): write your description
+        """
         self.rgb2bgr = transforms.Lambda(lambda x:x[[2,1,0],...])
 
     def __call__(self, sample):
+        """
+        Call the call.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         # swap color axis because
         # numpy image: H x W x C
         # torch image: C X H X W
@@ -286,9 +443,22 @@ class ToTensor_(object):
 class ToTensor_only_img(object):
     """Convert ndarrays in sample to Tensors."""
     def __init__(self):
+        """
+        Initialize the rgb rgb.
+
+        Args:
+            self: (todo): write your description
+        """
         self.rgb2bgr = transforms.Lambda(lambda x:x[[2,1,0],...])
 
     def __call__(self, sample):
+        """
+        Call the call
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         # swap color axis because
         # numpy image: H x W x C
         # torch image: C X H X W
@@ -306,9 +476,23 @@ class ToTensor_only_img(object):
 
 class FixedResize(object):
     def __init__(self, size):
+        """
+        Initialize the size.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+        """
         self.size = tuple(reversed(size))  # size: (h, w)
 
     def __call__(self, sample):
+        """
+        Resize the image
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
 
@@ -322,11 +506,26 @@ class FixedResize(object):
 
 class Keep_origin_size_Resize(object):
     def __init__(self, max_size, scale=1.0):
+        """
+        Initialize the image.
+
+        Args:
+            self: (todo): write your description
+            max_size: (int): write your description
+            scale: (float): write your description
+        """
         self.size = tuple(reversed(max_size))  # size: (h, w)
         self.scale = scale
         self.paste = Paste(int(max_size[0]*scale))
 
     def __call__(self, sample):
+        """
+        Call this image s output.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
 
@@ -342,12 +541,26 @@ class Keep_origin_size_Resize(object):
 
 class Scale(object):
     def __init__(self, size):
+        """
+        Initialize a number of bytes.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+        """
         if isinstance(size, numbers.Number):
             self.size = (int(size), int(size))
         else:
             self.size = size
 
     def __call__(self, sample):
+        """
+        Call the image
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         assert img.size == mask.size
@@ -365,9 +578,23 @@ class Scale(object):
 
 class Scale_(object):
     def __init__(self, scale):
+        """
+        Initialize the scale.
+
+        Args:
+            self: (todo): write your description
+            scale: (float): write your description
+        """
         self.scale = scale
 
     def __call__(self, sample):
+        """
+        Call the function
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         assert img.size == mask.size
@@ -382,9 +609,23 @@ class Scale_(object):
 
 class Scale_only_img(object):
     def __init__(self, scale):
+        """
+        Initialize the scale.
+
+        Args:
+            self: (todo): write your description
+            scale: (float): write your description
+        """
         self.scale = scale
 
     def __call__(self, sample):
+        """
+        Generate the image
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         # assert img.size == mask.size
@@ -399,9 +640,23 @@ class Scale_only_img(object):
 
 class RandomSizedCrop(object):
     def __init__(self, size):
+        """
+        Initialize the size.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+        """
         self.size = size
 
     def __call__(self, sample):
+        """
+        Generate a sample.
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         assert img.size == mask.size
@@ -438,9 +693,23 @@ class RandomSizedCrop(object):
 
 class RandomRotate(object):
     def __init__(self, degree):
+        """
+        Initialize a degree.
+
+        Args:
+            self: (todo): write your description
+            degree: (int): write your description
+        """
         self.degree = degree
 
     def __call__(self, sample):
+        """
+        Generate a random sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         rotate_degree = random.random() * 2 * self.degree - self.degree
@@ -453,6 +722,15 @@ class RandomRotate(object):
 class RandomSized_new(object):
     '''what we use is this class to aug'''
     def __init__(self, size,scale1=0.5,scale2=2):
+        """
+        Initialize the image.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+            scale1: (float): write your description
+            scale2: (float): write your description
+        """
         self.size = size
         # self.scale = Scale(self.size)
         self.crop = RandomCrop_new(self.size)
@@ -460,6 +738,13 @@ class RandomSized_new(object):
         self.big_scale = scale2
 
     def __call__(self, sample):
+        """
+        Randomly sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         assert img.size == mask.size
@@ -475,9 +760,23 @@ class RandomSized_new(object):
 
 class RandomScale(object):
     def __init__(self, limit):
+        """
+        Initialize a new limit.
+
+        Args:
+            self: (todo): write your description
+            limit: (int): write your description
+        """
         self.limit = limit
 
     def __call__(self, sample):
+        """
+        Call the sample
+
+        Args:
+            self: (todo): write your description
+            sample: (int): write your description
+        """
         img = sample['image']
         mask = sample['label']
         assert img.size == mask.size

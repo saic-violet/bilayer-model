@@ -8,6 +8,19 @@ from collections import OrderedDict
 
 class SeparableConv2d(nn.Module):
     def __init__(self, inplanes, planes, kernel_size=3, stride=1, padding=0, dilation=1, bias=False):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            kernel_size: (int): write your description
+            stride: (int): write your description
+            padding: (str): write your description
+            dilation: (todo): write your description
+            bias: (float): write your description
+        """
         super(SeparableConv2d, self).__init__()
 
         self.conv1 = nn.Conv2d(inplanes, inplanes, kernel_size, stride, padding, dilation,
@@ -15,12 +28,27 @@ class SeparableConv2d(nn.Module):
         self.pointwise = nn.Conv2d(inplanes, planes, 1, 1, 0, 1, 1, bias=bias)
 
     def forward(self, x):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = self.conv1(x)
         x = self.pointwise(x)
         return x
 
 
 def fixed_padding(inputs, kernel_size, rate):
+    """
+    Pad padding padding.
+
+    Args:
+        inputs: (array): write your description
+        kernel_size: (int): write your description
+        rate: (array): write your description
+    """
     kernel_size_effective = kernel_size + (kernel_size - 1) * (rate - 1)
     pad_total = kernel_size_effective - 1
     pad_beg = pad_total // 2
@@ -31,6 +59,19 @@ def fixed_padding(inputs, kernel_size, rate):
 
 class SeparableConv2d_aspp(nn.Module):
     def __init__(self, inplanes, planes, kernel_size=3, stride=1, dilation=1, bias=False, padding=0):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            kernel_size: (int): write your description
+            stride: (int): write your description
+            dilation: (todo): write your description
+            bias: (float): write your description
+            padding: (str): write your description
+        """
         super(SeparableConv2d_aspp, self).__init__()
 
         self.depthwise = nn.Conv2d(inplanes, inplanes, kernel_size, stride, padding, dilation,
@@ -41,6 +82,13 @@ class SeparableConv2d_aspp(nn.Module):
         self.relu = nn.ReLU()
 
     def forward(self, x):
+        """
+        Forward function.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         #         x = fixed_padding(x, self.depthwise.kernel_size[0], rate=self.depthwise.dilation[0])
         x = self.depthwise(x)
         x = self.depthwise_bn(x)
@@ -52,15 +100,40 @@ class SeparableConv2d_aspp(nn.Module):
 
 class Decoder_module(nn.Module):
     def __init__(self, inplanes, planes, rate=1):
+        """
+        Initialize the module.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            rate: (todo): write your description
+        """
         super(Decoder_module, self).__init__()
         self.atrous_convolution = SeparableConv2d_aspp(inplanes, planes, 3, stride=1, dilation=rate,padding=1)
 
     def forward(self, x):
+        """
+        Forward computation for x.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = self.atrous_convolution(x)
         return x
 
 class ASPP_module(nn.Module):
     def __init__(self, inplanes, planes, rate):
+        """
+        Initialize the module.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            rate: (todo): write your description
+        """
         super(ASPP_module, self).__init__()
         if rate == 1:
             raise RuntimeError()
@@ -71,11 +144,27 @@ class ASPP_module(nn.Module):
                                                            padding=padding)
 
     def forward(self, x):
+        """
+        Forward computation for x.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = self.atrous_convolution(x)
         return x
 
 class ASPP_module_rate0(nn.Module):
     def __init__(self, inplanes, planes, rate=1):
+        """
+        Initialize the module.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            rate: (todo): write your description
+        """
         super(ASPP_module_rate0, self).__init__()
         if rate == 1:
             kernel_size = 1
@@ -88,12 +177,32 @@ class ASPP_module_rate0(nn.Module):
             raise RuntimeError()
 
     def forward(self, x):
+        """
+        Perform algorithm.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = self.atrous_convolution(x)
         x = self.bn(x)
         return self.relu(x)
 
 class SeparableConv2d_same(nn.Module):
     def __init__(self, inplanes, planes, kernel_size=3, stride=1, dilation=1, bias=False, padding=0):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            kernel_size: (int): write your description
+            stride: (int): write your description
+            dilation: (todo): write your description
+            bias: (float): write your description
+            padding: (str): write your description
+        """
         super(SeparableConv2d_same, self).__init__()
 
         self.depthwise = nn.Conv2d(inplanes, inplanes, kernel_size, stride, padding, dilation,
@@ -103,6 +212,13 @@ class SeparableConv2d_same(nn.Module):
         self.pointwise_bn = nn.BatchNorm2d(planes)
 
     def forward(self, x):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = fixed_padding(x, self.depthwise.kernel_size[0], rate=self.depthwise.dilation[0])
         x = self.depthwise(x)
         x = self.depthwise_bn(x)
@@ -112,6 +228,20 @@ class SeparableConv2d_same(nn.Module):
 
 class Block(nn.Module):
     def __init__(self, inplanes, planes, reps, stride=1, dilation=1, start_with_relu=True, grow_first=True, is_last=False):
+        """
+        This function initialised by the class.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            reps: (float): write your description
+            stride: (int): write your description
+            dilation: (todo): write your description
+            start_with_relu: (todo): write your description
+            grow_first: (bool): write your description
+            is_last: (bool): write your description
+        """
         super(Block, self).__init__()
 
         if planes != inplanes or stride != 1:
@@ -157,6 +287,13 @@ class Block(nn.Module):
         self.rep = nn.Sequential(*rep)
 
     def forward(self, inp):
+        """
+        Forward the forward.
+
+        Args:
+            self: (todo): write your description
+            inp: (todo): write your description
+        """
         x = self.rep(inp)
 
         if self.skip is not None:
@@ -171,6 +308,20 @@ class Block(nn.Module):
 
 class Block2(nn.Module):
     def __init__(self, inplanes, planes, reps, stride=1, dilation=1, start_with_relu=True, grow_first=True, is_last=False):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            reps: (float): write your description
+            stride: (int): write your description
+            dilation: (todo): write your description
+            start_with_relu: (todo): write your description
+            grow_first: (bool): write your description
+            is_last: (bool): write your description
+        """
         super(Block2, self).__init__()
 
         if planes != inplanes or stride != 1:
@@ -212,6 +363,13 @@ class Block2(nn.Module):
         self.rep = nn.Sequential(*rep)
 
     def forward(self, inp):
+        """
+        Forward forward forward
+
+        Args:
+            self: (todo): write your description
+            inp: (todo): write your description
+        """
         x = self.rep(inp)
         low_middle = x.clone()
         x1 = x
@@ -231,6 +389,15 @@ class Xception(nn.Module):
     Modified Alighed Xception
     """
     def __init__(self, inplanes=3, os=16, pretrained=False):
+        """
+        Initialize the convolution.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            os: (int): write your description
+            pretrained: (bool): write your description
+        """
         super(Xception, self).__init__()
 
         if os == 16:
@@ -296,6 +463,13 @@ class Xception(nn.Module):
             self.__load_xception_pretrained()
 
     def forward(self, x):
+        """
+        Perform of the forward () function.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         # Entry flow
         x = self.conv1(x)
         x = self.bn1(x)
@@ -348,6 +522,12 @@ class Xception(nn.Module):
         return x, low_level_feat
 
     def __init_weight(self):
+        """
+        Initialize weight.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 # n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
@@ -358,6 +538,12 @@ class Xception(nn.Module):
                 m.bias.data.zero_()
 
     def __load_xception_pretrained(self):
+        """
+        Load the xception.
+
+        Args:
+            self: (todo): write your description
+        """
         pretrain_dict = model_zoo.load_url('http://data.lip6.fr/cadene/pretrainedmodels/xception-b5690688.pth')
         model_dict = {}
         state_dict = self.state_dict()
@@ -393,6 +579,17 @@ class Xception(nn.Module):
 
 class DeepLabv3_plus(nn.Module):
     def __init__(self, nInputChannels=3, n_classes=21, os=16, pretrained=False, _print=True):
+        """
+        Initialize the module.
+
+        Args:
+            self: (todo): write your description
+            nInputChannels: (todo): write your description
+            n_classes: (todo): write your description
+            os: (int): write your description
+            pretrained: (bool): write your description
+            _print: (int): write your description
+        """
         if _print:
             print("Constructing DeepLabv3+ model...")
             print("Number of classes: {}".format(n_classes))
@@ -438,6 +635,13 @@ class DeepLabv3_plus(nn.Module):
         self.semantic = nn.Conv2d(256, n_classes, kernel_size=1, stride=1)
 
     def forward(self, input):
+        """
+        Perform forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -469,16 +673,34 @@ class DeepLabv3_plus(nn.Module):
         return x
 
     def freeze_bn(self):
+        """
+        Freeze all modules.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.xception_features.modules():
             if isinstance(m, nn.BatchNorm2d):
                 m.eval()
 
     def freeze_totally_bn(self):
+        """
+        Freeze modules.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.modules():
             if isinstance(m, nn.BatchNorm2d):
                 m.eval()
 
     def freeze_aspp_bn(self):
+        """
+        Freeze batch aspp2d modules.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.aspp1.modules():
             if isinstance(m, nn.BatchNorm2d):
                 m.eval()
@@ -493,6 +715,12 @@ class DeepLabv3_plus(nn.Module):
                 m.eval()
 
     def learnable_parameters(self):
+        """
+        A list of parameter layers.
+
+        Args:
+            self: (todo): write your description
+        """
         layer_features_BN = []
         layer_features = []
         layer_aspp = []
@@ -518,6 +746,12 @@ class DeepLabv3_plus(nn.Module):
         return layer_features_BN,layer_features,layer_aspp,layer_projection,layer_decoder,layer_other
 
     def get_backbone_para(self):
+        """
+        Returns a list of feature features
+
+        Args:
+            self: (todo): write your description
+        """
         layer_features = []
         other_features = []
         model_para = list(self.named_parameters())
@@ -596,6 +830,12 @@ class DeepLabv3_plus(nn.Module):
             #             m.bias.requires_grad = False
 
     def __init_weight(self):
+        """
+        Initialize the weight.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
@@ -606,6 +846,13 @@ class DeepLabv3_plus(nn.Module):
                 m.bias.data.zero_()
 
     def load_state_dict_new(self, state_dict):
+        """
+        Loads a dictionary of parameters from a dictionary.
+
+        Args:
+            self: (todo): write your description
+            state_dict: (dict): write your description
+        """
         own_state = self.state_dict()
         #for name inshop_cos own_state:
         #    print name

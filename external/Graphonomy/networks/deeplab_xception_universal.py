@@ -12,10 +12,31 @@ from . import deeplab_xception, gcn, deeplab_xception_synBN
 class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_plus):
     def __init__(self, nInputChannels=3, n_classes=7, os=16, input_channels=256, hidden_layers=128, out_channels=256,
                  source_classes=20, transfer_graph=None):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            nInputChannels: (todo): write your description
+            n_classes: (todo): write your description
+            os: (int): write your description
+            input_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            out_channels: (int): write your description
+            source_classes: (str): write your description
+            transfer_graph: (todo): write your description
+        """
         super(deeplab_xception_transfer_basemodel_savememory, self).__init__(nInputChannels=nInputChannels, n_classes=n_classes,
                                                                   os=os,)
 
     def load_source_model(self,state_dict):
+        """
+        Load the model parameters.
+
+        Args:
+            self: (todo): write your description
+            state_dict: (dict): write your description
+        """
         own_state = self.state_dict()
         # for name inshop_cos own_state:
         #    print name
@@ -54,6 +75,12 @@ class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_
             print('missing keys in state_dict: "{}"'.format(missing))
 
     def get_target_parameter(self):
+        """
+        Returns a list of namedtuple.
+
+        Args:
+            self: (todo): write your description
+        """
         l = []
         other = []
         for name, k in self.named_parameters():
@@ -64,6 +91,12 @@ class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_
         return l, other
 
     def get_semantic_parameter(self):
+        """
+        Returns a list of semantic semantic parameter names.
+
+        Args:
+            self: (todo): write your description
+        """
         l = []
         for name, k in self.named_parameters():
             if 'semantic' in name:
@@ -71,6 +104,12 @@ class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_
         return l
 
     def get_source_parameter(self):
+        """
+        Get a list of parameter objects of this parameter.
+
+        Args:
+            self: (todo): write your description
+        """
         l = []
         for name, k in self.named_parameters():
             if 'source' in name:
@@ -78,6 +117,16 @@ class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_
         return l
 
     def top_forward(self, input, adj1_target=None, adj2_source=None,adj3_transfer=None ):
+        """
+        Perform forward forward forward.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -124,6 +173,16 @@ class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_
 
 
     def forward(self, input,adj1_target=None, adj2_source=None,adj3_transfer=None ):
+        """
+        Perform forward forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -182,11 +241,32 @@ class deeplab_xception_transfer_basemodel_savememory(deeplab_xception.DeepLabv3_
 class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synBN.DeepLabv3_plus):
     def __init__(self, nInputChannels=3, n_classes=7, os=16, input_channels=256, hidden_layers=128, out_channels=256,
                  source_classes=20, transfer_graph=None):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            nInputChannels: (todo): write your description
+            n_classes: (todo): write your description
+            os: (int): write your description
+            input_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            out_channels: (int): write your description
+            source_classes: (str): write your description
+            transfer_graph: (todo): write your description
+        """
         super(deeplab_xception_transfer_basemodel_savememory_synbn, self).__init__(nInputChannels=nInputChannels, n_classes=n_classes,
                                                                   os=os,)
 
 
     def load_source_model(self,state_dict):
+        """
+        Load the model parameters.
+
+        Args:
+            self: (todo): write your description
+            state_dict: (dict): write your description
+        """
         own_state = self.state_dict()
         # for name inshop_cos own_state:
         #    print name
@@ -225,6 +305,12 @@ class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synB
             print('missing keys in state_dict: "{}"'.format(missing))
 
     def get_target_parameter(self):
+        """
+        Returns a list of namedtuple.
+
+        Args:
+            self: (todo): write your description
+        """
         l = []
         other = []
         for name, k in self.named_parameters():
@@ -235,6 +321,12 @@ class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synB
         return l, other
 
     def get_semantic_parameter(self):
+        """
+        Returns a list of semantic semantic parameter names.
+
+        Args:
+            self: (todo): write your description
+        """
         l = []
         for name, k in self.named_parameters():
             if 'semantic' in name:
@@ -242,6 +334,12 @@ class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synB
         return l
 
     def get_source_parameter(self):
+        """
+        Get a list of parameter objects of this parameter.
+
+        Args:
+            self: (todo): write your description
+        """
         l = []
         for name, k in self.named_parameters():
             if 'source' in name:
@@ -249,6 +347,16 @@ class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synB
         return l
 
     def top_forward(self, input, adj1_target=None, adj2_source=None,adj3_transfer=None ):
+        """
+        Perform forward forward forward.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -295,6 +403,16 @@ class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synB
 
 
     def forward(self, input,adj1_target=None, adj2_source=None,adj3_transfer=None ):
+        """
+        Perform forward forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -353,6 +471,21 @@ class deeplab_xception_transfer_basemodel_savememory_synbn(deeplab_xception_synB
 class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory):
     def __init__(self, nInputChannels=3, n_classes=20, os=16, input_channels=256, hidden_layers=128, out_channels=256,
                  source_classes=7, middle_classes=18, transfer_graph=None):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            nInputChannels: (todo): write your description
+            n_classes: (todo): write your description
+            os: (int): write your description
+            input_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            out_channels: (int): write your description
+            source_classes: (str): write your description
+            middle_classes: (int): write your description
+            transfer_graph: (todo): write your description
+        """
         super(deeplab_xception_end2end_3d, self).__init__(nInputChannels=nInputChannels,
                                                           n_classes=n_classes,
                                                           os=os, )
@@ -431,6 +564,12 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
         self.fc_graph_middle = gcn.GraphConvolution(hidden_layers * 5, hidden_layers)
 
     def freeze_totally_bn(self):
+        """
+        Freeze all modules.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.modules():
             if isinstance(m, nn.BatchNorm2d):
                 m.eval()
@@ -438,6 +577,12 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
                 m.bias.requires_grad = False
 
     def freeze_backbone_bn(self):
+        """
+        Freeze backbone backbone ensemble.
+
+        Args:
+            self: (todo): write your description
+        """
         for m in self.xception_features.modules():
             if isinstance(m, nn.BatchNorm2d):
                 m.eval()
@@ -446,6 +591,22 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
 
     def top_forward(self, input, adj1_target=None, adj2_source=None, adj3_transfer_s2t=None, adj3_transfer_t2s=None,
             adj4_middle=None,adj5_transfer_s2m=None,adj6_transfer_t2m=None,adj5_transfer_m2s=None,adj6_transfer_m2t=None,):
+        """
+        R forward forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer_s2t: (todo): write your description
+            adj3_transfer_t2s: (todo): write your description
+            adj4_middle: (todo): write your description
+            adj5_transfer_s2m: (todo): write your description
+            adj6_transfer_t2m: (todo): write your description
+            adj5_transfer_m2s: (todo): write your description
+            adj6_transfer_m2t: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -624,11 +785,27 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
         return source_graph3, target_graph3, middle_graph3, x
 
     def similarity_trans(self,source,target):
+        """
+        Calculate similarity.
+
+        Args:
+            self: (todo): write your description
+            source: (str): write your description
+            target: (todo): write your description
+        """
         sim = torch.matmul(F.normalize(target, p=2, dim=-1), F.normalize(source, p=2, dim=-1).transpose(-1, -2))
         sim = F.softmax(sim, dim=-1)
         return torch.matmul(sim, source)
 
     def bottom_forward_source(self, input, source_graph):
+        """
+        Bottom source graph to the graph.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+            source_graph: (str): write your description
+        """
         # print('input size')
         # print(input.size())
         # print(source_graph.size())
@@ -639,6 +816,14 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
         return x
 
     def bottom_forward_target(self, input, target_graph):
+        """
+        Bottom_forward_graph
+
+        Args:
+            self: (todo): write your description
+            input: (str): write your description
+            target_graph: (todo): write your description
+        """
         graph = self.target_graph_2_fea.forward(target_graph, input)
         x = self.target_skip_conv(input)
         x = x + graph
@@ -646,6 +831,14 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
         return x
 
     def bottom_forward_middle(self, input, target_graph):
+        """
+        Bottom forward forward forward forward for a forward.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+            target_graph: (todo): write your description
+        """
         graph = self.middle_graph_2_fea.forward(target_graph, input)
         x = self.middle_skip_conv(input)
         x = x + graph
@@ -655,6 +848,24 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
     def forward(self, input_source, input_target=None, input_middle=None, adj1_target=None, adj2_source=None,
                 adj3_transfer_s2t=None, adj3_transfer_t2s=None, adj4_middle=None,adj5_transfer_s2m=None,
                 adj6_transfer_t2m=None,adj5_transfer_m2s=None,adj6_transfer_m2t=None,):
+        """
+        Parameters ---------- input_source : tuple from source_target.
+
+        Args:
+            self: (todo): write your description
+            input_source: (todo): write your description
+            input_target: (todo): write your description
+            input_middle: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer_s2t: (todo): write your description
+            adj3_transfer_t2s: (todo): write your description
+            adj4_middle: (todo): write your description
+            adj5_transfer_s2m: (todo): write your description
+            adj6_transfer_t2m: (todo): write your description
+            adj5_transfer_m2s: (todo): write your description
+            adj6_transfer_m2t: (todo): write your description
+        """
         if input_source is None and input_target is not None and input_middle is None:
             # target
             target_batch = input_target.size(0)
@@ -717,6 +928,21 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
 class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_savememory_synbn):
     def __init__(self, nInputChannels=3, n_classes=20, os=16, input_channels=256, hidden_layers=128, out_channels=256,
                  source_classes=7, middle_classes=18, transfer_graph=None):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            nInputChannels: (todo): write your description
+            n_classes: (todo): write your description
+            os: (int): write your description
+            input_channels: (todo): write your description
+            hidden_layers: (list): write your description
+            out_channels: (int): write your description
+            source_classes: (str): write your description
+            middle_classes: (int): write your description
+            transfer_graph: (todo): write your description
+        """
         super(deeplab_xception_end2end_3d_synbn, self).__init__(nInputChannels=nInputChannels,
                                                                 n_classes=n_classes,
                                                                 os=os, )
@@ -797,6 +1023,22 @@ class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_save
 
     def top_forward(self, input, adj1_target=None, adj2_source=None, adj3_transfer_s2t=None, adj3_transfer_t2s=None,
             adj4_middle=None,adj5_transfer_s2m=None,adj6_transfer_t2m=None,adj5_transfer_m2s=None,adj6_transfer_m2t=None,):
+        """
+        R forward forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer_s2t: (todo): write your description
+            adj3_transfer_t2s: (todo): write your description
+            adj4_middle: (todo): write your description
+            adj5_transfer_s2m: (todo): write your description
+            adj6_transfer_t2m: (todo): write your description
+            adj5_transfer_m2s: (todo): write your description
+            adj6_transfer_m2t: (todo): write your description
+        """
         x, low_level_features = self.xception_features(input)
         # print(x.size())
         x1 = self.aspp1(x)
@@ -975,11 +1217,27 @@ class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_save
         return source_graph3, target_graph3, middle_graph3, x
 
     def similarity_trans(self,source,target):
+        """
+        Calculate similarity.
+
+        Args:
+            self: (todo): write your description
+            source: (str): write your description
+            target: (todo): write your description
+        """
         sim = torch.matmul(F.normalize(target, p=2, dim=-1), F.normalize(source, p=2, dim=-1).transpose(-1, -2))
         sim = F.softmax(sim, dim=-1)
         return torch.matmul(sim, source)
 
     def bottom_forward_source(self, input, source_graph):
+        """
+        Bottom source graph to the graph.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+            source_graph: (str): write your description
+        """
         # print('input size')
         # print(input.size())
         # print(source_graph.size())
@@ -990,6 +1248,14 @@ class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_save
         return x
 
     def bottom_forward_target(self, input, target_graph):
+        """
+        Bottom_forward_graph
+
+        Args:
+            self: (todo): write your description
+            input: (str): write your description
+            target_graph: (todo): write your description
+        """
         graph = self.target_graph_2_fea.forward(target_graph, input)
         x = self.target_skip_conv(input)
         x = x + graph
@@ -997,6 +1263,14 @@ class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_save
         return x
 
     def bottom_forward_middle(self, input, target_graph):
+        """
+        Bottom forward forward forward forward for a forward.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+            target_graph: (todo): write your description
+        """
         graph = self.middle_graph_2_fea.forward(target_graph, input)
         x = self.middle_skip_conv(input)
         x = x + graph
@@ -1006,6 +1280,24 @@ class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_save
     def forward(self, input_source, input_target=None, input_middle=None, adj1_target=None, adj2_source=None,
                 adj3_transfer_s2t=None, adj3_transfer_t2s=None, adj4_middle=None,adj5_transfer_s2m=None,
                 adj6_transfer_t2m=None,adj5_transfer_m2s=None,adj6_transfer_m2t=None,):
+        """
+        Parameters ---------- input_source : tuple from source_target.
+
+        Args:
+            self: (todo): write your description
+            input_source: (todo): write your description
+            input_target: (todo): write your description
+            input_middle: (todo): write your description
+            adj1_target: (todo): write your description
+            adj2_source: (todo): write your description
+            adj3_transfer_s2t: (todo): write your description
+            adj3_transfer_t2s: (todo): write your description
+            adj4_middle: (todo): write your description
+            adj5_transfer_s2m: (todo): write your description
+            adj6_transfer_t2m: (todo): write your description
+            adj5_transfer_m2s: (todo): write your description
+            adj6_transfer_m2t: (todo): write your description
+        """
 
         if input_source is None and input_target is not None and input_middle is None:
             # target

@@ -221,6 +221,12 @@ def preprocess_adj(adj):
     return adj_normalized.todense()
 
 def row_norm(inputs):
+    """
+    Row norm of the input.
+
+    Args:
+        inputs: (array): write your description
+    """
     outputs = []
     for x in inputs:
         xsum = x.sum()
@@ -230,6 +236,12 @@ def row_norm(inputs):
 
 
 def normalize_adj_torch(adj):
+    """
+    Normalize the adjacency matrix.
+
+    Args:
+        adj: (todo): write your description
+    """
     # print(adj.size())
     if len(adj.size()) == 4:
         new_r = torch.zeros(adj.size()).type_as(adj)

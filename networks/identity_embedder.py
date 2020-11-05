@@ -13,6 +13,12 @@ from networks import utils as nt_utils
 class NetworkWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--emb_num_channels',          default=64, type=int, 
                                                   help='minimum number of channels')
 
@@ -38,6 +44,12 @@ class NetworkWrapper(nn.Module):
                                                   help='apply segmentation masks to source ground-truth images')
 
     def __init__(self, args):
+        """
+        Initialize network interface.
+
+        Args:
+            self: (todo): write your description
+        """
         super(NetworkWrapper, self).__init__()
         self.args = args
         
@@ -79,6 +91,13 @@ class NetworkWrapper(nn.Module):
 
     @torch.no_grad()
     def visualize_outputs(self, data_dict):
+        """
+        Visualize visualized output
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+        """
         visuals = [data_dict['source_imgs'].detach()]
 
         if 'source_stickmen' in data_dict.keys():
@@ -87,6 +106,12 @@ class NetworkWrapper(nn.Module):
         return visuals
 
     def __repr__(self):
+        """
+        Return a human - readable representation of the network.
+
+        Args:
+            self: (todo): write your description
+        """
         num_params = 0
         for p in self.net.parameters():
             num_params += p.numel()
@@ -100,6 +125,12 @@ class NetworkWrapper(nn.Module):
 
 class Embedder(nn.Module):
     def __init__(self, args):
+        """
+        Initialize the layer.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Embedder, self).__init__()
         # Number of encoding blocks
         num_enc_blocks = int(math.log(args.image_size // args.emb_output_tensor_size, 2))
@@ -155,6 +186,13 @@ class Embedder(nn.Module):
         self.dec_blocks = nn.ModuleList(layers)
 
     def forward(self, inputs):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+        """
         b, n, c, h, w = inputs.shape
         outputs = self.enc(inputs.view(-1, c, h, w))
         

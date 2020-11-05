@@ -18,6 +18,12 @@ from runners import utils as rn_utils
 class DatasetWrapper(data.Dataset):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         # Common properties
         parser.add('--num_source_frames',     default=1, type=int,
                                               help='number of frames used for initialization of the model')
@@ -43,6 +49,13 @@ class DatasetWrapper(data.Dataset):
         return parser
 
     def __init__(self, args, phase):
+        """
+        Initialize the phase.
+
+        Args:
+            self: (todo): write your description
+            phase: (float): write your description
+        """
         super(DatasetWrapper, self).__init__()
         # Store options
         self.phase = phase
@@ -67,6 +80,13 @@ class DatasetWrapper(data.Dataset):
         self.cur_num = torch.rand(1).item()
 
     def __getitem__(self, index):
+        """
+        Get images from a list of - segments.
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+        """
         # Sample source and target frames for the current sequence
         while True:
             try:
@@ -209,7 +229,19 @@ class DatasetWrapper(data.Dataset):
         return data_dict
 
     def __len__(self):
+        """
+        Returns the length of the sequence.
+
+        Args:
+            self: (todo): write your description
+        """
         return len(self.sequences)
 
     def shuffle(self):
+        """
+        Shuffle the sequences.
+
+        Args:
+            self: (todo): write your description
+        """
         self.sequences = [self.sequences[i] for i in torch.randperm(len(self.sequences)).tolist()]

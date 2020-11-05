@@ -11,6 +11,12 @@ from networks import utils
 class NetworkWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--dis_num_channels',        default=64, type=int, 
                                                 help='minimum number of channels')
 
@@ -39,6 +45,12 @@ class NetworkWrapper(nn.Module):
                                                 help='name of the tensor with fake images')
 
     def __init__(self, args):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+        """
         super(NetworkWrapper, self).__init__()
         self.args = args
         
@@ -50,6 +62,15 @@ class NetworkWrapper(nn.Module):
             net_names_to_train: list,
             all_networks: dict, # dict of all networks in the model
         ) -> dict:
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            net_names_to_train: (str): write your description
+            all_networks: (todo): write your description
+        """
         
         # Extract inputs
         real_inputs = data_dict['target_imgs']
@@ -108,6 +129,13 @@ class NetworkWrapper(nn.Module):
 
     @torch.no_grad()
     def visualize_outputs(self, data_dict):
+        """
+        Visualize visualized output
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+        """
         visuals = []
         
         if 'target_stickmen' in data_dict.keys():
@@ -116,6 +144,12 @@ class NetworkWrapper(nn.Module):
         return visuals
 
     def __repr__(self):
+        """
+        Return a human - readable representation of the network.
+
+        Args:
+            self: (todo): write your description
+        """
         num_params = 0
         for p in self.net.parameters():
             num_params += p.numel()
@@ -129,6 +163,12 @@ class NetworkWrapper(nn.Module):
 
 class Discriminator(nn.Module):
     def __init__(self, args):
+        """
+        Initialize the layer.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Discriminator, self).__init__()
         # Set options for the blocks
         num_down_blocks = int(math.log(args.image_size // args.dis_output_tensor_size, 2))
@@ -184,6 +224,13 @@ class Discriminator(nn.Module):
         self.linear = nn.Conv2d(out_channels, 1, 1)
 
     def forward(self, inputs):
+        """
+        Given a forward computation.
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+        """
         # Convolutional part
         conv_outputs = self.first_conv(inputs)
 

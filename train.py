@@ -20,6 +20,12 @@ from logger import Logger
 class TrainingWrapper(object):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         # General options
         parser.add('--project_dir',              default='.', type=str,
                                                  help='root directory of the code')
@@ -131,6 +137,13 @@ class TrainingWrapper(object):
         return parser
 
     def __init__(self, args, runner=None):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            runner: (todo): write your description
+        """
         super(TrainingWrapper, self).__init__()
         # Initialize and apply general options
         ssl._create_default_https_context = ssl._create_unverified_context
@@ -198,6 +211,12 @@ class TrainingWrapper(object):
             print(self.runner)
 
     def train(self, args):
+        """
+        Training function.
+
+        Args:
+            self: (todo): write your description
+        """
         # Reset amp
         if args.use_apex:
             from apex import amp
@@ -313,6 +332,11 @@ class TrainingWrapper(object):
 
                 else:
                     def closure():
+                        """
+                        Compute the loss of the loss.
+
+                        Args:
+                        """
                         loss = model(data_dict)
                         loss.backward()
                         return loss

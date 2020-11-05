@@ -26,9 +26,25 @@ def index_dataset(dataset):
     return return_dict
 
 def sample_from_class(dataset,class_id):
+    """
+    Return a random sample from the dataset.
+
+    Args:
+        dataset: (todo): write your description
+        class_id: (str): write your description
+    """
     return dataset[class_id][random.randrange(len(dataset[class_id]))]
 
 def sampler_npair_K(batch_size,dataset,K=2,label_random_list = [0,0,1,1,2,2,2]):
+    """
+    Generate k samples.
+
+    Args:
+        batch_size: (int): write your description
+        dataset: (todo): write your description
+        K: (todo): write your description
+        label_random_list: (list): write your description
+    """
     images_by_class = index_dataset(dataset)
     for batch_idx in range(int(math.ceil(len(dataset) * 1.0 / batch_size))):
         example_indices = [sample_from_class(images_by_class, class_label_ind) for _ in range(batch_size)
@@ -37,6 +53,16 @@ def sampler_npair_K(batch_size,dataset,K=2,label_random_list = [0,0,1,1,2,2,2]):
         yield example_indices[:batch_size]
 
 def sampler_(images_by_class,batch_size,dataset,K=2,label_random_list = [0,0,1,1,]):
+    """
+    Generate a random dataset.
+
+    Args:
+        images_by_class: (todo): write your description
+        batch_size: (int): write your description
+        dataset: (todo): write your description
+        K: (int): write your description
+        label_random_list: (list): write your description
+    """
     # images_by_class = index_dataset(dataset)
     a = label_random_list[random.randrange(len(label_random_list))]
     # print(a)
@@ -53,6 +79,15 @@ class cusSampler(torch.utils.data.sampler.Sampler):
     """
 
     def __init__(self, dataset, batchsize, label_random_list=[0,1,1,1,2,2,2]):
+        """
+        Initialize the dataset.
+
+        Args:
+            self: (todo): write your description
+            dataset: (todo): write your description
+            batchsize: (int): write your description
+            label_random_list: (str): write your description
+        """
         self.images_by_class = index_dataset(dataset)
         self.batch_size = batchsize
         self.dataset = dataset
@@ -60,6 +95,12 @@ class cusSampler(torch.utils.data.sampler.Sampler):
         self.len = int(math.ceil(len(dataset) * 1.0 / batchsize))
 
     def __iter__(self):
+        """
+        Iterate a random iterator.
+
+        Args:
+            self: (todo): write your description
+        """
         # return [sample_from_class(self.images_by_class, class_label_ind) for _ in range(self.batchsize)
         #                    for class_label_ind in [self.label_random_list[random.randrange(len(self.label_random_list))]]
         #                    ]
@@ -67,9 +108,24 @@ class cusSampler(torch.utils.data.sampler.Sampler):
         return iter(sampler_(self.images_by_class,self.batch_size,self.dataset,self.label_random_list))
 
     def __len__(self):
+        """
+        Returns the number of rows in bytes.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.len
 
 def shuffle_cus(d1=20,d2=10,d3=5,batch=2):
+    """
+    Shuffle a randomly randomly randomly sampled.
+
+    Args:
+        d1: (todo): write your description
+        d2: (todo): write your description
+        d3: (todo): write your description
+        batch: (todo): write your description
+    """
     return_list = []
     total_num = d1 + d2 + d3
     list1 = list(range(d1))
@@ -96,6 +152,16 @@ def shuffle_cus(d1=20,d2=10,d3=5,batch=2):
     return return_list
 
 def shuffle_cus_balance(d1=20,d2=10,d3=5,batch=2,balance_index=1):
+    """
+    Shuffle the balance of the balance.
+
+    Args:
+        d1: (todo): write your description
+        d2: (todo): write your description
+        d3: (todo): write your description
+        batch: (todo): write your description
+        balance_index: (int): write your description
+    """
     return_list = []
     total_num = d1 + d2 + d3
     list1 = list(range(d1))
@@ -144,6 +210,17 @@ def shuffle_cus_balance(d1=20,d2=10,d3=5,batch=2,balance_index=1):
 
 class Sampler_uni(torch.utils.data.sampler.Sampler):
     def __init__(self, num1, num2, num3, batchsize,balance_id=None):
+        """
+        Initialize the balance.
+
+        Args:
+            self: (todo): write your description
+            num1: (int): write your description
+            num2: (int): write your description
+            num3: (int): write your description
+            batchsize: (int): write your description
+            balance_id: (str): write your description
+        """
         self.num1 = num1
         self.num2 = num2
         self.num3 = num3
@@ -151,6 +228,12 @@ class Sampler_uni(torch.utils.data.sampler.Sampler):
         self.balance_id = balance_id
 
     def __iter__(self):
+        """
+        Return an iterator of - > int
+
+        Args:
+            self: (todo): write your description
+        """
         if self.balance_id is not None:
             rlist = shuffle_cus_balance(self.num1, self.num2, self.num3, self.batchsize, balance_index=self.balance_id)
         else:
@@ -159,6 +242,12 @@ class Sampler_uni(torch.utils.data.sampler.Sampler):
 
 
     def __len__(self):
+        """
+        Returns the number of bytes in the file.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.balance_id is not None:
             return self.num1*3
         return self.num1+self.num2+self.num3
