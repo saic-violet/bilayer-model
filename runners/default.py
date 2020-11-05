@@ -15,6 +15,12 @@ from datasets import utils as ds_utils
 class RunnerWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         # Networks used in train and test
         parser.add('--networks_train',       default = 'identity_embedder, texture_generator, keypoints_embedder, inference_generator, discriminator', 
                                              help    = 'order of forward passes during the training of gen (or gen and dis for sim sgd)')
@@ -92,6 +98,13 @@ class RunnerWrapper(nn.Module):
         return parser
 
     def __init__(self, args, training=True):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            training: (todo): write your description
+        """
         super(RunnerWrapper, self).__init__()
         # Store general options
         self.args = args
@@ -175,6 +188,13 @@ class RunnerWrapper(nn.Module):
             False: {}}
 
     def forward(self, data_dict):
+        """
+        Perform loss.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+        """
         ### Set lists of networks' and losses' names ###
         if self.training:
             nets_names = self.nets_names_train
@@ -209,6 +229,12 @@ class RunnerWrapper(nn.Module):
     ########################################################
 
     def load_names(self, args):
+        """
+        Loads statistics.
+
+        Args:
+            self: (todo): write your description
+        """
         # Initialize utility lists and dicts for the networks
         self.nets_names_to_train = utils.parse_str_to_list(args.networks_to_train)
         self.nets_names_train = utils.parse_str_to_list(args.networks_train)
@@ -220,6 +246,12 @@ class RunnerWrapper(nn.Module):
         self.losses_names_test = utils.parse_str_to_list(args.losses_test)
 
     def get_optimizers(self, args):
+        """
+        Get optimizer
+
+        Args:
+            self: (todo): write your description
+        """
         # Initialize utility lists and dicts for the optimizers
         nets_optims_names = utils.parse_str_to_dict(args.optims)
         nets_lrs = utils.parse_str_to_dict(args.lrs, value_type=float)
@@ -261,6 +293,13 @@ class RunnerWrapper(nn.Module):
         return optims
 
     def process_losses_dict(self, losses_dict):
+        """
+        Processes a dictionary.
+
+        Args:
+            self: (todo): write your description
+            losses_dict: (dict): write your description
+        """
         # This function appends loss value into losses_dict
         loss = torch.zeros(1)
         if self.args.num_gpus > 0:
@@ -276,6 +315,12 @@ class RunnerWrapper(nn.Module):
         return loss
 
     def output_losses(self):
+        """
+        Return the loss for all losses
+
+        Args:
+            self: (todo): write your description
+        """
         losses = {}
 
         for key, values in self.losses_history[self.training].items():
@@ -293,6 +338,12 @@ class RunnerWrapper(nn.Module):
             return losses
 
     def output_visuals(self):
+        """
+        Return a dictionary of visualising outputs.
+
+        Args:
+            self: (todo): write your description
+        """
         # This function creates an output grid of visuals
         visuals_data_dict = {}
 
@@ -314,6 +365,13 @@ class RunnerWrapper(nn.Module):
         return visuals.cpu()
 
     def train(self, mode=True):
+        """
+        Train the model
+
+        Args:
+            self: (todo): write your description
+            mode: (str): write your description
+        """
         self.training = mode
         # Only change the mode of modules thst are being trained
         for net_name in self.nets_names_to_train:
@@ -323,11 +381,25 @@ class RunnerWrapper(nn.Module):
         return self
 
     def calculate_batchnorm_stats(self, train_dataloader, debug=False):
+        """
+        Calculate the loss.
+
+        Args:
+            self: (todo): write your description
+            train_dataloader: (todo): write your description
+            debug: (bool): write your description
+        """
         for net_name in self.nets_names_calc_stats:
             self.nets[net_name].apply(utils.stats_calculation)
 
             # Set spectral norm and weight averaging to eval
             def set_modules_to_eval(module):
+                """
+                Set the module to the given module.
+
+                Args:
+                    module: (todo): write your description
+                """
                 if 'BatchNorm' in module.__class__.__name__:
                     return module
 

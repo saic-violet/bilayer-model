@@ -8,6 +8,12 @@ import cv2
 
 
 def get_dataloader(args, phase):
+    """
+    Get dataloader dataset.
+
+    Args:
+        phase: (todo): write your description
+    """
     dataset = import_module(f'datasets.{args.dataloader_name}').DatasetWrapper(args, phase)
     if phase == 'train': 
     	args.train_size = len(dataset)
@@ -19,6 +25,13 @@ def get_dataloader(args, phase):
 
 # Required to draw a stickman for ArcSoft keypoints
 def merge_parts(part_even, part_odd):
+    """
+    Merge the part of a part_odd
+
+    Args:
+        part_even: (str): write your description
+        part_odd: (todo): write your description
+    """
     output = []
     
     for i in range(len(part_even) + len(part_odd)):
@@ -31,6 +44,12 @@ def merge_parts(part_even, part_odd):
 
 # Function for stickman and facemasks drawing
 def draw_stickmen(args, poses):
+    """
+    Draw a list of the tiles.
+
+    Args:
+        poses: (todo): write your description
+    """
     ### Define drawing options ###
     if not '2d' in args.folder_postfix and not '3d' in args.folder_postfix:
         # Arcsoft keypoints
@@ -105,6 +124,13 @@ def draw_stickmen(args, poses):
 
 # Flip vector poses via x axis
 def flip_poses(args, keypoints, size):
+    """
+    Flip a list of the given keypoints.
+
+    Args:
+        keypoints: (array): write your description
+        size: (int): write your description
+    """
     if not '2d' in args.folder_postfix and not '3d' in args.folder_postfix:
         # Arcsoft keypoints
         edges_parts  = [

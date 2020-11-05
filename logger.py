@@ -9,6 +9,13 @@ from torchvision import transforms
 
 class Logger(object):
     def __init__(self, args, experiment_dir):
+        """
+        Initialize the experiment.
+
+        Args:
+            self: (todo): write your description
+            experiment_dir: (str): write your description
+        """
         super(Logger, self).__init__()
         self.num_iter = {'train': 0, 'test': 0}
         
@@ -32,6 +39,16 @@ class Logger(object):
                 self.writer = tensorboardX.SummaryWriter('/tensorboard')
 
     def output_logs(self, phase, visuals, losses, time):
+        """
+        Evaluates log of the phase
+
+        Args:
+            self: (todo): write your description
+            phase: (todo): write your description
+            visuals: (bool): write your description
+            losses: (dict): write your description
+            time: (int): write your description
+        """
         if not self.no_disk_write_ops:
             # Increment iter counter
             self.num_iter[phase] += 1
@@ -63,6 +80,14 @@ class Logger(object):
         print(', '.join('%s: %.3f' % (key, value) for key, value in losses.items()) + ', time: %.3f' % time)
 
     def set_num_iter(self, train_iter, test_iter):
+        """
+        Sets the train iteration.
+
+        Args:
+            self: (todo): write your description
+            train_iter: (int): write your description
+            test_iter: (todo): write your description
+        """
         self.num_iter = {
             'train': train_iter,
             'test': test_iter}

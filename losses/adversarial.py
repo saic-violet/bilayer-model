@@ -9,10 +9,22 @@ from runners import utils as rn_utils
 class LossWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Parse arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--adv_pred_type', type=str, default='ragan', choices=['gan', 'rgan', 'ragan'])
         parser.add('--adv_loss_weight', type=float, default=0.5)
 
     def __init__(self, args):
+        """
+        Initialize the loss
+
+        Args:
+            self: (todo): write your description
+        """
         super(LossWrapper, self).__init__()
         # Supported prediction functions
         get_preds = {
@@ -37,6 +49,14 @@ class LossWrapper(nn.Module):
         self.weight = args.adv_loss_weight
 
     def forward(self, data_dict, losses_dict):    
+        """
+        Forward computation
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            losses_dict: (dict): write your description
+        """
         # Calculate loss for dis
         real_scores = data_dict['real_scores']
         fake_scores = data_dict['fake_scores_dis']

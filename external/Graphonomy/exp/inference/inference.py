@@ -28,6 +28,13 @@ label_colours = [(0,0,0)
 
 
 def flip(x, dim):
+    """
+    Flip a tensor to [ 0 1 ].
+
+    Args:
+        x: (array): write your description
+        dim: (int): write your description
+    """
     indices = [slice(None)] * x.dim()
     indices[dim] = torch.arange(x.size(dim) - 1, -1, -1,
                                 dtype=torch.long, device=x.device)
@@ -78,10 +85,23 @@ def decode_labels(mask, num_images=1, num_classes=20):
     return outputs
 
 def read_img(img_path):
+    """
+    Reads an image file
+
+    Args:
+        img_path: (str): write your description
+    """
     _img = Image.open(img_path).convert('RGB')  # return is RGB pic
     return _img
 
 def img_transform(img, transform=None):
+    """
+    Convert antsimage
+
+    Args:
+        img: (array): write your description
+        transform: (float): write your description
+    """
     sample = {'image': img, 'label': 0}
 
     sample = transform(sample)

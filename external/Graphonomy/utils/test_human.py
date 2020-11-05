@@ -4,12 +4,22 @@ from PIL import Image
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     image_paths, label_paths = init_path()
     hist = compute_hist(image_paths, label_paths)
     show_result(hist)
 
 
 def init_path():
+    """
+    Initialize image paths.
+
+    Args:
+    """
     list_file = './human/list/val_id.txt'
     file_names = []
     with open(list_file, 'rb') as f:
@@ -41,6 +51,14 @@ def fast_hist(lbl, pred, n_cls):
 
 
 def compute_hist(images, labels,n_cls=20):
+    """
+    Compute a 2d histogram of images.
+
+    Args:
+        images: (array): write your description
+        labels: (str): write your description
+        n_cls: (int): write your description
+    """
     hist = np.zeros((n_cls, n_cls))
     for img_path, label_path in zip(images, labels):
         label = Image.open(label_path)
@@ -60,6 +78,12 @@ def compute_hist(images, labels,n_cls=20):
 
 
 def show_result(hist):
+    """
+    Calculate results
+
+    Args:
+        hist: (todo): write your description
+    """
     classes = ['background', 'hat', 'hair', 'glove', 'sunglasses', 'upperclothes',
                'dress', 'coat', 'socks', 'pants', 'jumpsuits', 'scarf', 'skirt',
                'face', 'leftArm', 'rightArm', 'leftLeg', 'rightLeg', 'leftShoe',

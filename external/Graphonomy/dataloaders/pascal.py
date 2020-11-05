@@ -60,10 +60,23 @@ class VOCSegmentation(Dataset):
         print('Number of images in {}: {:d}'.format(split, len(self.images)))
 
     def __len__(self):
+        """
+        Returns the length of the image.
+
+        Args:
+            self: (todo): write your description
+        """
         return len(self.images)
 
 
     def __getitem__(self, index):
+        """
+        Get the index of an item
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+        """
         _img, _target= self._make_img_gt_point_pair(index)
         sample = {'image': _img, 'label': _target}
 
@@ -73,6 +86,13 @@ class VOCSegmentation(Dataset):
         return sample
 
     def _make_img_gt_point_pair(self, index):
+        """
+        Creates image coordinates from the image
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+        """
         # Read Image and Target
         # _img = np.array(Image.open(self.images[index]).convert('RGB')).astype(np.float32)
         # _target = np.array(Image.open(self.categories[index])).astype(np.float32)
@@ -83,6 +103,12 @@ class VOCSegmentation(Dataset):
         return _img, _target
 
     def __str__(self):
+        """
+        Return a string representation of the string.
+
+        Args:
+            self: (todo): write your description
+        """
         return 'PASCAL(split=' + str(self.split) + ')'
 
 class test_segmentation(VOCSegmentation):
@@ -90,10 +116,29 @@ class test_segmentation(VOCSegmentation):
                  split='train',
                  transform=None,
                  flip=True):
+        """
+        Initialize the database.
+
+        Args:
+            self: (todo): write your description
+            base_dir: (str): write your description
+            Path: (str): write your description
+            db_root_dir: (str): write your description
+            split: (int): write your description
+            transform: (str): write your description
+            flip: (str): write your description
+        """
         super(test_segmentation, self).__init__(base_dir=base_dir,split=split,transform=transform)
         self._flip_flag = flip
 
     def __getitem__(self, index):
+        """
+        Get the index of an item
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+        """
         _img, _target= self._make_img_gt_point_pair(index)
         sample = {'image': _img, 'label': _target}
 

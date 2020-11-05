@@ -18,9 +18,21 @@ from runners import utils as rn_utils
 class LossWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get the arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--nme_num_threads', type=int, default=8)
     
     def __init__(self, args):
+        """
+        Initialize the imap module.
+
+        Args:
+            self: (todo): write your description
+        """
         super(LossWrapper, self).__init__()
         self.num_threads = args.nme_num_threads
 
@@ -39,6 +51,14 @@ class LossWrapper(nn.Module):
         self.left_eye = list(range(42, 48))
 
     def forward(self, data_dict, losses_dict):
+        """
+        Parameters ---------- data_dict : list
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            losses_dict: (dict): write your description
+        """
         fake_imgs = data_dict['pred_target_imgs']
         real_imgs = data_dict['target_imgs']
 
@@ -55,6 +75,15 @@ class LossWrapper(nn.Module):
 
     @torch.no_grad()
     def calc_metric(self, fake_img, real_img, worker_id):
+        """
+        Calculate the metric
+
+        Args:
+            self: (todo): write your description
+            fake_img: (todo): write your description
+            real_img: (todo): write your description
+            worker_id: (str): write your description
+        """
         fake_img = (((fake_img.detach() + 1.0) / 2.0) * 255.0).cpu().numpy().astype('uint8').transpose(1, 2, 0)
         fake_keypoints = torch.from_numpy(self.fa[worker_id].get_landmarks(fake_img)[0])[:, :2]
 

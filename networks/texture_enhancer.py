@@ -13,6 +13,12 @@ from networks import utils as nt_utils
 class NetworkWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Parse arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--enh_num_channels',            default=64, type=int, 
                                                     help='minimum number of channels')
 
@@ -50,6 +56,12 @@ class NetworkWrapper(nn.Module):
                                                     help='apply segmentation masks to predicted and ground-truth images')
 
     def __init__(self, args):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+        """
         super(NetworkWrapper, self).__init__()
         self.args = args
 
@@ -67,6 +79,15 @@ class NetworkWrapper(nn.Module):
             networks_to_train: list,
             all_networks: dict, # dict of all networks in the model
         ) -> dict:
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            networks_to_train: (todo): write your description
+            all_networks: (todo): write your description
+        """
 
         # Do not store activations if this network is not being trained
         if 'texture_enhancer' not in networks_to_train:
@@ -215,11 +236,24 @@ class NetworkWrapper(nn.Module):
 
     @torch.no_grad()
     def visualize_outputs(self, data_dict):
+        """
+        Visualizes a dictionary
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+        """
         visuals = []
 
         return visuals
 
     def __repr__(self):
+        """
+        Return a human - readable representation of the network.
+
+        Args:
+            self: (todo): write your description
+        """
         num_params = 0
         for p in self.net.parameters():
             num_params += p.numel()
@@ -232,6 +266,12 @@ class NetworkWrapper(nn.Module):
 
 class Generator(nn.Module):
     def __init__(self, args):
+        """
+        Initialize the layer.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Generator, self).__init__()
         num_down_blocks = int(math.log(args.image_size // args.enh_bottleneck_tensor_size, 2))
 
@@ -304,6 +344,13 @@ class Generator(nn.Module):
         self.blocks = nn.Sequential(*layers)
 
     def forward(self, inputs):
+        """
+        Parameters ---------- inputs : iterable.
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+        """
         outputs = self.blocks(inputs)
 
         return outputs

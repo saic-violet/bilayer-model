@@ -12,6 +12,12 @@ from networks import utils
 class NetworkWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Parse arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--pse_num_channels',      default=256, type=int, 
                                               help='number of intermediate channels')
 
@@ -37,6 +43,12 @@ class NetworkWrapper(nn.Module):
                                               help='number of frequencies used')
 
     def __init__(self, args):
+        """
+        Initialize network interface.
+
+        Args:
+            self: (todo): write your description
+        """
         super(NetworkWrapper, self).__init__()
         self.args = args
 
@@ -103,11 +115,24 @@ class NetworkWrapper(nn.Module):
 
     @torch.no_grad()
     def visualize_outputs(self, data_dict):
+        """
+        Visualizes a dictionary
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+        """
         visuals = []
 
         return visuals
 
     def __repr__(self):
+        """
+        Return a human - readable representation of the network.
+
+        Args:
+            self: (todo): write your description
+        """
         num_params = 0
         for p in self.net.parameters():
             num_params += p.numel()
@@ -121,6 +146,12 @@ class NetworkWrapper(nn.Module):
 
 class PoseEmbedder(nn.Module):
     def __init__(self, args):
+        """
+        Initialize the layer.
+
+        Args:
+            self: (todo): write your description
+        """
         super(PoseEmbedder, self).__init__()
         # Calculate output size of the embedding
         self.num_channels = args.inf_max_channels
@@ -164,6 +195,13 @@ class PoseEmbedder(nn.Module):
         self.mlp = nn.Sequential(*layers)
 
     def forward(self, inputs):
+        """
+        Parameters ---------- inputs for the embedding.
+
+        Args:
+            self: (todo): write your description
+            inputs: (todo): write your description
+        """
         pose_embeds = self.mlp(inputs)
 
         pose_embeds = pose_embeds.view(-1, self.num_channels, self.spatial_size, self.spatial_size)

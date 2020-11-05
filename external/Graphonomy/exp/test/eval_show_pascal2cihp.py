@@ -42,6 +42,13 @@ label_colours = [(0,0,0)
 
 
 def flip(x, dim):
+    """
+    Flip a tensor to [ 0 1 ].
+
+    Args:
+        x: (array): write your description
+        dim: (int): write your description
+    """
     indices = [slice(None)] * x.dim()
     indices[dim] = torch.arange(x.size(dim) - 1, -1, -1,
                                 dtype=torch.long, device=x.device)
@@ -113,6 +120,12 @@ def get_parser():
 
 
 def main(opts):
+    """
+    Main function.
+
+    Args:
+        opts: (todo): write your description
+    """
     adj2_ = torch.from_numpy(graph.cihp2pascal_nlp_adj).float()
     adj2_test = adj2_.unsqueeze(0).unsqueeze(0).expand(1, 1, 7, 20).cuda().transpose(2, 3)
 

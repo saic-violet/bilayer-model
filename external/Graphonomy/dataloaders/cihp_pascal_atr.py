@@ -141,14 +141,33 @@ class VOCSegmentation(Dataset):
         print('Number of images in {}: {:d}'.format(split, len(self.images)))
 
     def __len__(self):
+        """
+        Returns the length of the image.
+
+        Args:
+            self: (todo): write your description
+        """
         return len(self.images)
 
     def get_class_num(self):
+        """
+        Returns the number of num_pascal.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.num_cihp,self.num_pascal,self.num_atr
 
 
 
     def __getitem__(self, index):
+        """
+        Get target item from the target array.
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+        """
         _img, _target,_lbl= self._make_img_gt_point_pair(index)
         sample = {'image': _img, 'label': _target,}
 
@@ -158,6 +177,13 @@ class VOCSegmentation(Dataset):
         return sample
 
     def _make_img_gt_point_pair(self, index):
+        """
+        Make image coordinates.
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+        """
         # Read Image and Target
         # _img = np.array(Image.open(self.images[index]).convert('RGB')).astype(np.float32)
         # _target = np.array(Image.open(self.categories[index])).astype(np.float32)
@@ -181,6 +207,12 @@ class VOCSegmentation(Dataset):
         return _img, _target,type_lbl
 
     def __str__(self):
+        """
+        Return a string representation of the string.
+
+        Args:
+            self: (todo): write your description
+        """
         return 'datasets(split=' + str(self.split) + ')'
 
 

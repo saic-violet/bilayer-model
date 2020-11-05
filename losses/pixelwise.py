@@ -11,12 +11,24 @@ from runners import utils as rn_utils
 class LossWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--pix_loss_type', type=str, default='l1')
         parser.add('--pix_loss_weights', type=str, default='10.0', help='comma separated floats')
         parser.add('--pix_loss_apply_to', type=str, default='pred_target_delta_lf_rgbs, target_imgs', help='can specify multiple tensor names from data_dict')
         parser.add('--pix_loss_names', type=str, default='L1', help='name for each loss')
     
     def __init__(self, args):
+        """
+        Initialize loss.
+
+        Args:
+            self: (todo): write your description
+        """
         super(LossWrapper, self).__init__()
         self.apply_to = [rn_utils.parse_str_to_list(s, sep=',') for s in rn_utils.parse_str_to_list(args.pix_loss_apply_to, sep=';')]
         
@@ -33,6 +45,14 @@ class LossWrapper(nn.Module):
         self.names = rn_utils.parse_str_to_list(args.pix_loss_names)
 
     def forward(self, data_dict, losses_dict):
+        """
+        Parameters ---------- data_dict : dict.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            losses_dict: (dict): write your description
+        """
         for i, (tensor_name, target_tensor_name) in enumerate(self.apply_to):
             real_imgs = data_dict[target_tensor_name]
             fake_imgs = data_dict[tensor_name]

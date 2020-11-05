@@ -13,6 +13,12 @@ from networks import utils as nt_utils
 class LossWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Parse arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         # Extractor parameters
         parser.add('--per_full_net_names', type=str, default='vgg19_imagenet_pytorch, vgg16_face_caffe')
         parser.add('--per_net_layers', type=str, default='1,6,11,20,29; 1,6,11,18,25', help='a list of layers indices')
@@ -26,6 +32,12 @@ class LossWrapper(nn.Module):
         parser.add('--per_loss_names', type=str, default='VGG19, VGGFace')
 
     def __init__(self, args):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+        """
         super(LossWrapper, self).__init__()
         ### Define losses ###
         losses = {
@@ -103,6 +115,14 @@ class LossWrapper(nn.Module):
             self.nets[n] = net_blocks
 
     def forward(self, data_dict, losses_dict):
+        """
+        Parameters ---------- data_dict : np. ndarray.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            losses_dict: (dict): write your description
+        """
         for i, (tensor_name, target_tensor_name) in enumerate(self.apply_to):
             # Extract inputs
             real_imgs = data_dict[target_tensor_name]
@@ -130,6 +150,13 @@ class LossWrapper(nn.Module):
         return losses_dict
 
     def forward_extractor(self, imgs):
+        """
+        Extract the forward computation.
+
+        Args:
+            self: (todo): write your description
+            imgs: (todo): write your description
+        """
         # Calculate features
         feats = []
         for net, full_net_name in zip(self.nets, self.full_net_names):

@@ -11,6 +11,12 @@ from runners import utils as rn_utils
 class LossWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--wpr_loss_type', type=str, default='l1')
         parser.add('--wpr_loss_weight', type=float, default=10.0)
         parser.add('--wpr_loss_weight_decay', type=float, default=0.9, help='multiplicative decay of loss weight')
@@ -18,6 +24,12 @@ class LossWrapper(nn.Module):
         parser.add('--wpr_loss_apply_to', type=str, default='pred_target_delta_uvs', help='tensors this loss is applied to')
     
     def __init__(self, args):
+        """
+        Initialize the loss.
+
+        Args:
+            self: (todo): write your description
+        """
         super(LossWrapper, self).__init__()
         self.apply_to = rn_utils.parse_str_to_list(args.wpr_loss_apply_to)
         self.eps = args.eps
@@ -30,6 +42,14 @@ class LossWrapper(nn.Module):
         self.num_iters = 0
 
     def forward(self, data_dict, losses_dict):
+        """
+        Perform forward computation.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            losses_dict: (dict): write your description
+        """
         if self.num_iters == self.decay_schedule:
             self.weight = max(self.weight * self.weight_decay, self.eps)
             self.num_iters = 1

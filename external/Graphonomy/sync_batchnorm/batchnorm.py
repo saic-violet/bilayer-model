@@ -37,6 +37,16 @@ _MasterMessage = collections.namedtuple('_MasterMessage', ['sum', 'inv_std'])
 
 class _SynchronizedBatchNorm(_BatchNorm):
     def __init__(self, num_features, eps=1e-5, momentum=0.1, affine=True):
+        """
+        Initialize the gradient.
+
+        Args:
+            self: (todo): write your description
+            num_features: (int): write your description
+            eps: (float): write your description
+            momentum: (array): write your description
+            affine: (array): write your description
+        """
         super(_SynchronizedBatchNorm, self).__init__(num_features, eps=eps, momentum=momentum, affine=affine)
 
         self._sync_master = SyncMaster(self._data_parallel_master)
@@ -46,6 +56,13 @@ class _SynchronizedBatchNorm(_BatchNorm):
         self._slave_pipe = None
 
     def forward(self, input):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+        """
         # If it is not parallel computation or is in evaluation mode, use PyTorch's implementation.
         if not (self._is_parallel and self.training):
             return F.batch_norm(
@@ -78,6 +95,14 @@ class _SynchronizedBatchNorm(_BatchNorm):
         return output.view(input_shape)
 
     def __data_parallel_replicate__(self, ctx, copy_id):
+        """
+        Register parallel parallel parallel parallel.
+
+        Args:
+            self: (todo): write your description
+            ctx: (todo): write your description
+            copy_id: (bool): write your description
+        """
         self._is_parallel = True
         self._parallel_id = copy_id
 
@@ -182,6 +207,13 @@ class SynchronizedBatchNorm1d(_SynchronizedBatchNorm):
     """
 
     def _check_input_dim(self, input):
+        """
+        Checks input dimension dimension.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+        """
         if input.dim() != 2 and input.dim() != 3:
             raise ValueError('expected 2D or 3D input (got {}D input)'
                              .format(input.dim()))
@@ -245,6 +277,13 @@ class SynchronizedBatchNorm2d(_SynchronizedBatchNorm):
     """
 
     def _check_input_dim(self, input):
+        """
+        Checks input dimension.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+        """
         if input.dim() != 4:
             raise ValueError('expected 4D input (got {}D input)'
                              .format(input.dim()))
@@ -309,6 +348,13 @@ class SynchronizedBatchNorm3d(_SynchronizedBatchNorm):
     """
 
     def _check_input_dim(self, input):
+        """
+        Checks the input dimension.
+
+        Args:
+            self: (todo): write your description
+            input: (array): write your description
+        """
         if input.dim() != 5:
             raise ValueError('expected 5D input (got {}D input)'
                              .format(input.dim()))

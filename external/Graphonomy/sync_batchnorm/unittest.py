@@ -15,6 +15,12 @@ from torch.autograd import Variable
 
 
 def as_numpy(v):
+    """
+    Convert the value as a numpy array.
+
+    Args:
+        v: (str): write your description
+    """
     if isinstance(v, Variable):
         v = v.data
     return v.cpu().numpy()
@@ -22,6 +28,16 @@ def as_numpy(v):
 
 class TorchTestCase(unittest.TestCase):
     def assertTensorClose(self, a, b, atol=1e-3, rtol=1e-3):
+        """
+        Compare two tensors of two tensors.
+
+        Args:
+            self: (todo): write your description
+            a: (todo): write your description
+            b: (todo): write your description
+            atol: (float): write your description
+            rtol: (float): write your description
+        """
         npa, npb = as_numpy(a), as_numpy(b)
         self.assertTrue(
                 np.allclose(npa, npb, atol=atol),

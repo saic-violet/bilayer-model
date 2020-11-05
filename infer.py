@@ -21,6 +21,12 @@ import face_alignment
 class InferenceWrapper(nn.Module):
     @staticmethod
     def get_args(args_dict):
+        """
+        Parse arguments from command line arguments.
+
+        Args:
+            args_dict: (dict): write your description
+        """
         # Read and parse args of the module being loaded
         args_path = pathlib.Path(args_dict['project_dir']) / 'runs' / args_dict['experiment_name'] / 'args.txt'
 
@@ -44,6 +50,13 @@ class InferenceWrapper(nn.Module):
         return args
 
     def __init__(self, args_dict):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            args_dict: (dict): write your description
+        """
         super(InferenceWrapper, self).__init__()
         # Get a config for the network
         self.args = self.get_args(args_dict)
@@ -87,9 +100,24 @@ class InferenceWrapper(nn.Module):
             self.cuda()
 
     def change_args(self, args_dict):
+        """
+        Change the arguments.
+
+        Args:
+            self: (todo): write your description
+            args_dict: (dict): write your description
+        """
         self.args = self.get_args(args_dict)
 
     def preprocess_data(self, input_imgs, crop_data=True):
+        """
+        Preprocesses the input_img.
+
+        Args:
+            self: (todo): write your description
+            input_imgs: (todo): write your description
+            crop_data: (todo): write your description
+        """
         imgs = []
         poses = []
         stickmen = []
@@ -157,6 +185,15 @@ class InferenceWrapper(nn.Module):
         return poses, imgs, segs, stickmen
 
     def forward(self, data_dict, crop_data=True, no_grad=True):
+        """
+        Preprocess forward computation.
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            crop_data: (todo): write your description
+            no_grad: (todo): write your description
+        """
         if 'target_imgs' not in data_dict.keys():
             data_dict['target_imgs'] = None
 

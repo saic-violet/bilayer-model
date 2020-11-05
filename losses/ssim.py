@@ -10,10 +10,22 @@ from math import exp
 class LossWrapper(nn.Module):
     @staticmethod
     def get_args(parser):
+        """
+        Get command line arguments.
+
+        Args:
+            parser: (todo): write your description
+        """
         parser.add('--ssm_use_masks', action='store_true', help='use masks before application of the loss')
         parser.add('--ssm_calc_grad', action='store_true', help='if True, the loss is differentiable')
     
     def __init__(self, args):
+        """
+        Initialize the gradient.
+
+        Args:
+            self: (todo): write your description
+        """
         super(LossWrapper, self).__init__()
         self.calc_grad = args.ssm_calc_grad
         self.use_masks = args.ssm_use_masks
@@ -21,6 +33,14 @@ class LossWrapper(nn.Module):
         self.loss = SSIM()
 
     def forward(self, data_dict, losses_dict):
+        """
+        Forward forward forward forward forward
+
+        Args:
+            self: (todo): write your description
+            data_dict: (dict): write your description
+            losses_dict: (dict): write your description
+        """
         real_imgs = data_dict['target_imgs']
         fake_imgs = data_dict['pred_target_imgs']
         
@@ -47,16 +67,41 @@ class LossWrapper(nn.Module):
 
 
 def gaussian(window_size, sigma):
+    """
+    Returns a gaussian distribution.
+
+    Args:
+        window_size: (int): write your description
+        sigma: (float): write your description
+    """
     gauss = torch.Tensor([exp(-(x - window_size//2)**2/float(2*sigma**2)) for x in range(window_size)])
     return gauss/gauss.sum()
 
 def create_window(window_size, channel):
+    """
+    Create a new window
+
+    Args:
+        window_size: (int): write your description
+        channel: (int): write your description
+    """
     _1D_window = gaussian(window_size, 1.5).unsqueeze(1)
     _2D_window = _1D_window.mm(_1D_window.t()).float().unsqueeze(0).unsqueeze(0)
     window = Variable(_2D_window.expand(channel, 1, window_size, window_size).contiguous())
     return window
 
 def _ssim(img1, img2, window, window_size, channel, size_average = True):
+    """
+    Calculate the mean of an image
+
+    Args:
+        img1: (array): write your description
+        img2: (array): write your description
+        window: (int): write your description
+        window_size: (int): write your description
+        channel: (int): write your description
+        size_average: (int): write your description
+    """
     mu1 = F.conv2d(img1, window, padding = window_size//2, groups = channel)
     mu2 = F.conv2d(img2, window, padding = window_size//2, groups = channel)
 
@@ -80,6 +125,14 @@ def _ssim(img1, img2, window, window_size, channel, size_average = True):
 
 class SSIM(torch.nn.Module):
     def __init__(self, window_size = 11, size_average = True):
+        """
+        Initialize window.
+
+        Args:
+            self: (todo): write your description
+            window_size: (int): write your description
+            size_average: (int): write your description
+        """
         super(SSIM, self).__init__()
         self.window_size = window_size
         self.size_average = size_average
@@ -87,6 +140,14 @@ class SSIM(torch.nn.Module):
         self.window = create_window(window_size, self.channel)
 
     def forward(self, img1, img2):
+        """
+        Perform forward forward forward.
+
+        Args:
+            self: (todo): write your description
+            img1: (todo): write your description
+            img2: (todo): write your description
+        """
         (_, channel, _, _) = img1.size()
 
         if channel == self.channel and self.window.data.type() == img1.data.type():
